@@ -158,6 +158,10 @@ header{border-bottom:3px solid var(--brand)}
 .car{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px;margin-bottom:40px}
 .car .card{flex:0 0 210px;scroll-snap-align:start}
 footer{background:var(--brand)}
+.pic{overflow:hidden}
+.pic img{width:100%;height:100%;object-fit:cover}
+.est{color:#b8466b;font-weight:700;font-size:.82rem}
+.btn:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none}
 .fr{display:grid;gap:4px;font-weight:700;font-size:.95rem}
 .fr select{border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:12px;padding:.6rem .8rem}
 #fmsg{color:var(--rose-d);font-weight:700}
@@ -287,8 +291,8 @@ footer{background:var(--brand)}
 
 <script>
 /* ---------- Dados: [categoria, ícone, nome, descrição, preço] ---------- */
-const CATS=["Todos","Papelaria Fofa","Escrita","Caderno e Fichário","Papelaria","Planner e Agenda","Embalagens"];
-const P=[
+let CATS=["Todos","Papelaria Fofa","Escrita","Caderno e Fichário","Papelaria","Planner e Agenda","Embalagens"];
+let P=[
 [1,"🎨","Giz de Rosto Toy Fashion 4 Cores Tris","Giz de rosto em 4 cores da marca Tris.",21.50],
 [1,"📝","Bloco de Anotações Capivara com Patinete Dessin","Bloco de anotações Dessin com estampa fofa.",9.90],
 [2,"🖍️","Marca Texto Lumini Ex Slim Cis Avulsa","Marca-texto slim da Cis, vendido avulso.",5.90],
@@ -342,14 +346,16 @@ const P=[
 [5,"📘","Agenda 2027 Executiva Pocket Case São Domingos / Animativa","Agenda executiva pocket 2027.",69.90],
 [6,"✉️","25 Envelopes Coloridos para Carta e Convites 114x162 mm Foroni","Pacote com 25 envelopes coloridos.",25.00],
 [6,"✉️","100 Envelopes Coloridos para Carta e Convites 114x162 mm Foroni","Pacote com 100 envelopes coloridos.",65.00]
-].map((p,i)=>({id:i,cat:p[0],ico:p[1],nome:p[2],desc:p[3],preco:p[4]}));
+].map((p,i)=>({id:i,cat:p[0],ico:p[1],nome:p[2],desc:p[3],preco:p[4],img:"",estoque:null,dest:/Giz de Rosto|Haribo|Neo Pen 12|Caderneta 1\/8|Tutti|Lousa|Agenda 2027 Executiva Semanal|Calendário de Parede 2027/.test(p[2])}));
 
 const R=v=>v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
 const $=s=>document.querySelector(s);
 let cat=0,termo="",cart={};
 
 /* ---------- Filtros e grade ---------- */
-$("#filtros").innerHTML=CATS.map((c,i)=>`<button class="chip" data-i="${i}" aria-pressed="${i===0}">${c}</button>`).join("");
+function montarFiltros(){
+  $("#filtros").innerHTML=CATS.map((c,i)=>`<button class="chip" data-i="${i}" aria-pressed="${i===cat}">${c}</button>`).join("");
+}
 $("#filtros").addEventListener("click",e=>{
   const b=e.target.closest(".chip"); if(!b) return;
   cat=+b.dataset.i;
@@ -358,16 +364,24 @@ $("#filtros").addEventListener("click",e=>{
 });
 $("#busca").addEventListener("input",e=>{termo=e.target.value.trim().toLowerCase();render()});
 
-const card=p=>`<article class="card"><div class="pic c${p.cat}" role="img" aria-label="Imagem ilustrativa: ${p.nome}">${p.ico}</div><div class="info"><span class="cat-l">${CATS[p.cat]}</span><h3>${p.nome}</h3><div class="price">${R(p.preco)}</div><button class="btn" data-add="${p.id}">Adicionar ao Carrinho</button></div></article>`;
-$("#car").innerHTML=P.filter(p=>/Giz de Rosto|Haribo|Neo Pen 12|Caderneta 1\/8|Tutti|Lousa|Agenda 2027 Executiva Semanal|Calendário de Parede 2027/.test(p.nome)).slice(0,8).map(card).join("");
+const esc=t=>String(t).replace(/"/g,"&quot;");
+/* foto do produto; se falhar, volta para o emoji */
+const pic=p=>p.img?`<img src="${esc(p.img)}" alt="" loading="lazy" onerror="this.parentNode.textContent='${p.ico}'">`:p.ico;
+const cor=p=>(p.cat-1)%6+1;
+const card=p=>{const fim=p.estoque===0;return `<article class="card"><div class="pic c${cor(p)}" role="img" aria-label="Imagem do produto: ${esc(p.nome)}">${pic(p)}</div><div class="info"><span class="cat-l">${CATS[p.cat]}</span><h3>${p.nome}</h3><div class="price">${R(p.preco)}</div>${p.estoque>0&&p.estoque<=5?`<small class="est">Restam ${p.estoque}</small>`:""}<button class="btn" data-add="${p.id}"${fim?" disabled":""}>${fim?"Esgotado":"Adicionar ao Carrinho"}</button></div></article>`};
+function montarDestaques(){
+  $("#car").innerHTML=P.filter(p=>p.dest&&p.estoque!==0).slice(0,12).map(card).join("");
+}
+/* respeita o estoque informado na planilha */
+const podeAdd=id=>{const m=P[id].estoque;if(m!==null&&(cart[id]||0)>=m){toast("Você já colocou todo o estoque deste produto no carrinho");return false}return true};
 function render(){
-  $("#dest").hidden=!!(cat||termo);
+  $("#dest").hidden=!!(cat||termo||!$("#car").children.length);
   const lista=P.filter(p=>(!cat||p.cat===cat)&&(p.nome+" "+p.desc).toLowerCase().includes(termo));
   $("#grade").innerHTML=lista.length?lista.map(card).join(""):`<p class="empty">Nenhum produto encontrado. Tente outro nome ou categoria.</p>`;
 }
 document.addEventListener("click",e=>{
   const b=e.target.closest("[data-add]"); if(!b) return;
-  const id=+b.dataset.add; cart[id]=(cart[id]||0)+1; draw(); toast(P[id].nome+" foi adicionado ao carrinho");
+  const id=+b.dataset.add; if(!podeAdd(id)) return; cart[id]=(cart[id]||0)+1; draw(); toast(P[id].nome+" foi adicionado ao carrinho");
 });
 
 /* ---------- Carrinho ---------- */
@@ -376,7 +390,7 @@ function draw(){
   let sub=0,qtd=0;
   $("#items").innerHTML=ids.length?ids.map(id=>{
     const p=P[id],q=cart[id]; sub+=p.preco*q; qtd+=q;
-    return `<div class="it"><div class="pic c${p.cat}" aria-hidden="true">${p.ico}</div>
+    return `<div class="it"><div class="pic c${cor(p)}" aria-hidden="true">${pic(p)}</div>
       <div><h3>${p.nome}</h3><div>${R(p.preco)}</div>
       <div class="row"><div class="q"><button data-m="${id}" aria-label="Diminuir quantidade">−</button><span>${q}</span><button data-a="${id}" aria-label="Aumentar quantidade">+</button></div>
       <button class="rm" data-r="${id}">Remover</button></div></div></div>`}).join("")
@@ -390,7 +404,7 @@ function draw(){
 }
 $("#items").addEventListener("click",e=>{
   const t=e.target; const g=k=>t.dataset[k];
-  if(g("a")) cart[g("a")]++;
+  if(g("a")){ if(podeAdd(+g("a"))) cart[g("a")]++; }
   else if(g("m")){ if(--cart[g("m")]<=0) delete cart[g("m")] }
   else if(g("r")) delete cart[g("r")];
   else return;
@@ -406,7 +420,7 @@ $("#fechar").onclick=$("#veu").onclick=()=>abrir(false);
 document.addEventListener("keydown",e=>{if(e.key==="Escape")abrir(false)});
 $("#fin").onclick=()=>{
   if(!Object.keys(cart).length) return toast("Adicione produtos antes de finalizar a compra");
-  if(loc==="") return toast("Escolha o local de entrega");
+  if(loc===""){ $("#fmsg").textContent="Escolha o local de entrega para finalizar."; $("#local").focus(); return; }
   if(LOCAIS[loc][1]===null) return toast("Não entregamos neste local");
   enviarWhatsApp();
 };
@@ -427,6 +441,7 @@ function enviarWhatsApp(){
   const a=document.createElement("a"); // link real em nova aba (mais compatível com celulares)
   a.href=url; a.target="_blank"; a.rel="noopener noreferrer";
   document.body.appendChild(a); a.click(); a.remove();
+  $("#fmsg").innerHTML=`Se o WhatsApp não abriu, <a href="${url}" target="_blank" rel="noopener">toque aqui para enviar o pedido</a>.`;
   toast("Abrindo o WhatsApp com o seu pedido. É só enviar! 💬");
 }
 let tt; function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("on"),2200)}
@@ -443,7 +458,49 @@ $("#form").addEventListener("submit",e=>{
   $("#ok").hidden=false; e.target.reset();
 });
 
-render(); draw();
+/* ---------- Planilha do Google (opcional) ----------
+   Cole abaixo o link CSV da planilha publicada. Vazio = usa o catálogo padrão deste arquivo. */
+const SHEET_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vRAm4lI79xy_Fa6uVK_KXsQDIWgjYMPhxQG1e9mhF_BTjJ6JWyuU_-TJ2L6AO-ZRfNyttnL_j9DnHrT/pub?output=csv";
+function csv(t){ // leitor de CSV simples (aceita aspas e vírgulas dentro do texto)
+  const rows=[];let r=[],c="",q=false;
+  for(let i=0;i<t.length;i++){const ch=t[i];
+    if(q){ if(ch==='"'){ if(t[i+1]==='"'){c+='"';i++} else q=false } else c+=ch }
+    else if(ch==='"') q=true;
+    else if(ch===","){ r.push(c); c="" }
+    else if(ch==="\n"||ch==="\r"){ if(ch==="\r"&&t[i+1]==="\n") i++; r.push(c); c=""; rows.push(r); r=[] }
+    else c+=ch }
+  if(c!==""||r.length){ r.push(c); rows.push(r) }
+  return rows;
+}
+const num=v=>{v=String(v||"").replace(/[^\d,.-]/g,""); if(v.includes(",")) v=v.replace(/\./g,"").replace(",","."); return parseFloat(v)};
+/* links do Google Drive viram imagem; outros links são usados como estão */
+const foto=u=>{u=(u||"").trim();const m=u.match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:export=view&)?id=)([\w-]+)/);return m?`https://drive.google.com/thumbnail?id=${m[1]}&sz=w800`:u};
+function lerPlanilha(t){
+  const rows=csv(t);
+  const h=rows.shift().map(x=>x.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""));
+  const cats=["Todos"],out=[];
+  rows.forEach(r=>{
+    const g=n=>(r[h.indexOf(n)]||"").trim();
+    const nome=g("nome"),preco=num(g("preco"));
+    if(!nome||isNaN(preco)||/^n[aã]o$/i.test(g("ativo"))) return;
+    const c=g("categoria")||"Outros"; let ci=cats.indexOf(c); if(ci<0) ci=cats.push(c)-1;
+    const e=parseInt(g("estoque"),10);
+    out.push({id:out.length,cat:ci,ico:g("emoji")||"🛍️",nome,desc:g("descricao"),preco,img:foto(g("foto")),estoque:isNaN(e)?null:Math.max(e,0),dest:/^sim$/i.test(g("destaque"))});
+  });
+  return {cats,out};
+}
+async function iniciar(){
+  if(SHEET_URL){
+    $("#grade").innerHTML='<p class="empty">Carregando produtos…</p>';
+    try{
+      const res=await fetch(SHEET_URL+(SHEET_URL.includes("?")?"&":"?")+"t="+Date.now());
+      const d=lerPlanilha(await res.text());
+      if(d.out.length){ P=d.out; CATS=d.cats; }
+    }catch(e){ console.warn("Planilha indisponível, usando o catálogo padrão",e) }
+  }
+  montarFiltros(); montarDestaques(); render(); draw();
+}
+iniciar();
 </script>
 </body>
 </html>
