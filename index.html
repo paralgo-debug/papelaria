@@ -237,6 +237,33 @@ footer{background:#0a1224;border-top:3px solid var(--brand)}
 .canais h3{font-size:1.2rem}.canais p{margin:0;color:var(--muted)}
 .canais .btn{text-align:center;padding:.9rem 1rem}
 .btn.zap{background:#0f7a3f}
+
+/* ---------- Página do produto ---------- */
+#detalhe{position:fixed;inset:0;z-index:55;background:var(--bg);overflow-y:auto;padding-bottom:env(safe-area-inset-bottom,0px)}
+#detalhe[hidden]{display:none}
+.dtop{position:sticky;top:0;z-index:2;display:flex;justify-content:space-between;align-items:center;padding:calc(env(safe-area-inset-top,0px) + 10px) 16px 10px;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.back{border:1px solid var(--line);background:var(--surface);color:var(--ink);font:700 1rem var(--f-body);padding:.6rem 1.1rem;border-radius:999px;cursor:pointer}
+.dwrap{max-width:900px;margin:0 auto;padding:16px;display:grid;gap:20px}
+.dpic{aspect-ratio:1/1;border-radius:14px;display:grid;place-items:center;font-size:6rem;overflow:hidden}
+.dpic img{width:100%;height:100%;object-fit:cover}
+.dinfo{display:grid;gap:10px;align-content:start}
+.dinfo h2{font-size:1.35rem}
+.dinfo .price{font:700 1.8rem var(--f-head);color:#7db5ff}
+.dinfo .btn{padding:1rem;font-size:1.05rem}
+.ddesc{color:var(--muted);margin:0}
+.ddesc a{color:#7db5ff}
+@media (min-width:760px){.dwrap{grid-template-columns:1fr 1fr;padding:28px 16px}}
+.plink{color:inherit;text-decoration:none}
+.card{cursor:pointer}
+.info .btn{font-size:.76rem;padding:.5rem .4rem;line-height:1.25}
+.canais .btn{display:flex;align-items:center;justify-content:center;gap:10px}
+.canais .btn img,.soc a img{width:26px;height:26px;object-fit:contain}
+.ddesc{white-space:pre-line}
+
+/* ---------- Nome e endereço do pedido ---------- */
+.fr input{border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:12px;padding:.6rem .8rem;font:inherit;font-weight:400}
+.fr.erro input{border-color:#ff5252;box-shadow:0 0 0 4px rgba(255,82,82,.45);animation:tremer .45s}
+.sum{max-height:64vh;overflow-y:auto}
 </style>
 </head>
 <body>
@@ -248,7 +275,7 @@ footer{background:#0a1224;border-top:3px solid var(--brand)}
       <a href="#inicio">Início</a><a href="#produtos">Produtos</a><a href="#sobre">Sobre</a><a href="#contato">Contato</a>
     </nav>
     <div class="search"><input id="busca" type="search" placeholder="O que você procura?" aria-label="Buscar produtos"></div>
-    <button class="cart-btn" id="abrir" aria-label="Abrir carrinho"><span aria-hidden="true">🛍️</span><b id="cont">0</b></button>
+    <button class="cart-btn" id="abrir" aria-label="Abrir carrinho"><span aria-hidden="true">🛒</span><b id="cont">0</b></button>
   </div>
 </header>
 
@@ -292,19 +319,19 @@ footer{background:#0a1224;border-top:3px solid var(--brand)}
     <div>
       <div class="head"><h2>Vamos conversar?</h2><p>Passe na loja, mande um recado ou chame no WhatsApp.</p></div>
       <ul>
-        <li>📍 Rua das Acácias, 482 – Savassi, Belo Horizonte/MG</li>
-        <li>📞 (31) 3333-4821</li>
-        <li>💬 WhatsApp: (27) 99863-2825</li>
-        <li>✉️ ola@papelariaaurora.com.br</li>
+        <li id="c-end">📍 Rua das Acácias, 482 – Savassi, Belo Horizonte/MG</li>
+        <li id="c-tel">📞 (31) 3333-4821</li>
+        <li id="c-zap">💬 WhatsApp: (27) 99863-2825</li>
+        <li id="c-mail">✉️ ola@papelariaaurora.com.br</li>
       </ul>
-      <div class="hours"><h3>Horário de funcionamento</h3><p>Segunda a sexta: 9h às 19h</p><p>Sábado: 9h às 15h</p><p>Domingo: fechado</p></div>
+      <div class="hours"><h3>Horário de funcionamento</h3><div id="c-hor"><p>Segunda a sexta: 9h às 19h</p><p>Sábado: 9h às 15h</p><p>Domingo: fechado</p></div></div>
     </div>
     <div class="canais">
       <h3>Fale com a gente</h3>
       <p>Toque no botão para abrir a conversa direto no WhatsApp.</p>
-      <a class="btn zap" data-zap href="https://wa.me/5527998632825" target="_blank" rel="noopener">💬 Chamar no WhatsApp</a>
-      <a class="btn" href="https://www.instagram.com/papelariaaurora/" target="_blank" rel="noopener">📸 Instagram @papelariaaurora</a>
-      <a class="btn" href="https://www.facebook.com/papelariaaurora" target="_blank" rel="noopener">👍 Facebook /papelariaaurora</a>
+      <a class="btn zap" data-zap href="https://wa.me/5527998632825" target="_blank" rel="noopener"><img data-logo="zap" alt="" width="26" height="26">Chamar no WhatsApp</a>
+      <a class="btn" id="b-ig" data-ig href="https://www.instagram.com/papelariaaurora/" target="_blank" rel="noopener"><img data-logo="ig" alt="" width="26" height="26">Instagram @papelariaaurora</a>
+      <a class="btn" id="b-fb" data-fb href="https://www.facebook.com/papelariaaurora" target="_blank" rel="noopener"><img data-logo="fb" alt="" width="26" height="26">Facebook /papelariaaurora</a>
     </div>
   </div>
 </section>
@@ -314,17 +341,26 @@ footer{background:#0a1224;border-top:3px solid var(--brand)}
   <div class="wrap">
     <a href="#inicio" class="logo">Papelaria Aurora</a>
     <nav aria-label="Links rápidos"><a href="#inicio">Início</a><a href="#produtos">Produtos</a><a href="#sobre">Sobre</a><a href="#contato">Contato</a></nav>
-    <div class="soc"><a href="https://www.instagram.com/papelariaaurora/" target="_blank" rel="noopener" aria-label="Instagram">IG</a><a href="https://www.facebook.com/papelariaaurora" target="_blank" rel="noopener" aria-label="Facebook">FB</a><a data-zap href="https://wa.me/5527998632825" target="_blank" rel="noopener" aria-label="WhatsApp">WA</a></div>
+    <div class="soc"><a data-ig href="https://www.instagram.com/papelariaaurora/" target="_blank" rel="noopener" aria-label="Instagram"><img data-logo="ig" alt="" width="26" height="26"></a><a data-fb href="https://www.facebook.com/papelariaaurora" target="_blank" rel="noopener" aria-label="Facebook"><img data-logo="fb" alt="" width="26" height="26"></a><a data-zap href="https://wa.me/5527998632825" target="_blank" rel="noopener" aria-label="WhatsApp"><img data-logo="zap" alt="" width="26" height="26"></a></div>
     <p class="copy">© 2026 Papelaria Aurora. Todos os direitos reservados. Loja fictícia criada para demonstração.</p>
   </div>
 </footer>
 
+<section id="detalhe" hidden aria-label="Detalhes do produto">
+  <div class="dtop">
+    <button class="back" id="voltar">← Voltar</button>
+    <button class="cart-btn" id="abrir2" aria-label="Abrir carrinho"><span aria-hidden="true">🛒</span><b id="cont2">0</b></button>
+  </div>
+  <div class="dwrap" id="dcorpo"></div>
+</section>
 <div class="veil" id="veu"></div>
 <aside id="carrinho" aria-label="Carrinho de compras" aria-hidden="true">
   <div class="ah"><h2>Seu carrinho</h2><button class="x" id="fechar" aria-label="Fechar carrinho">✕</button></div>
   <div id="items"></div>
   <div class="sum">
     <label class="fr">Local de entrega<select id="local"></select></label>
+    <label class="fr">Seu nome<input id="cnome" autocomplete="name" placeholder="Nome completo"></label>
+    <label class="fr">Seu endereço<input id="cend" autocomplete="street-address" placeholder="Rua, número, bairro"></label>
     <div><span>Subtotal</span><span id="sub">R$ 0,00</span></div>
     <div><span>Entrega</span><span id="ent">—</span></div>
     <div class="tot"><span>Total</span><span id="tot">R$ 0,00</span></div>
@@ -338,61 +374,62 @@ footer{background:#0a1224;border-top:3px solid var(--brand)}
 /* ---------- Dados: [categoria, ícone, nome, descrição, preço] ---------- */
 let CATS=["Todos","Papelaria Fofa","Escrita","Caderno e Fichário","Papelaria","Planner e Agenda","Embalagens"];
 let P=[
-[1,"🎨","Giz de Rosto Toy Fashion 4 Cores Tris","Giz de rosto em 4 cores da marca Tris.",21.50],
-[1,"📝","Bloco de Anotações Capivara com Patinete Dessin","Bloco de anotações Dessin com estampa fofa.",9.90],
-[2,"🖍️","Marca Texto Lumini Ex Slim Cis Avulsa","Marca-texto slim da Cis, vendido avulso.",5.90],
-[2,"🖍️","Marca Texto Fluo Brw Avulsa","Marca-texto Fluo da Brw, vendido avulso.",3.50],
-[2,"🖍️","Marca Texto Fluo Amarelo cx 12 Brw","Caixa com 12 marca-textos Fluo amarelos.",29.00],
-[2,"🖍️","Marca Texto Gel Compactor Avulso","Marca-texto em gel da Compactor.",10.95],
-[2,"🖌️","Marcador Artístico Giz Líquido 6mm Evoke Brw","Marcador de giz líquido com ponta de 6 mm.",14.90],
-[2,"🖌️","Marcador Criativo Flow 2 Pontas Cis Avulso","Marcador de duas pontas da Cis. Preço a partir de.",10.90],
-[2,"🎨","Kit Marcador Criativo Flow Estojo 24 Cores Cis","Estojo com 24 cores de marcador criativo.",269.00],
-[2,"🖊️","Kit Caneta Esferográfica Retrátil Haribo Compactor","Kit de canetas retráteis da linha Haribo.",10.30],
-[2,"🖊️","Kit Marca Texto + Caneta Haribo Compactor","Kit com marca-texto e caneta da linha Haribo.",15.90],
-[2,"🖊️","Caneta Energel Retrátil Black Colors 0,5 Pentel","Caneta gel retrátil Pentel, vendida avulsa.",14.50],
-[2,"🖊️","Caneta Energel Retrátil 1,0 Pentel Avulsa","Caneta gel retrátil Pentel de ponta 1,0.",10.90],
-[2,"🖊️","Caneta Hi Tecpoint V5 0,5 mm Pilot Avulsa","Caneta Pilot de ponta fina, vendida avulsa.",31.60],
-[2,"🖊️","Caneta Gel 0,5 mm Abacatinho Tilibra","Caneta gel Tilibra com tema abacatinho.",16.95],
-[2,"🖊️","Caneta Esferográfica Gel Spiro 0,7 Cis Avulsa","Caneta gel Spiro da Cis, vendida avulsa.",4.50],
-[2,"🖊️","Caneta Esferográfica 10 Cores Astro Tris","Caneta esferográfica com 10 cores da Tris.",29.90],
-[2,"🖊️","Refil Caneta Energel 0,7 mm Pentel c/3","Pacote com 3 refis para caneta Energel.",26.50],
-[2,"🖍️","Canetinha Hidrográfica Neo Pen Mini 6 Cores Compactor","Estojo com 6 canetinhas mini.",7.50],
-[2,"🖍️","Canetinha Hidrográfica Neo Pen 12 Cores Compactor","Estojo com 12 canetinhas hidrográficas.",13.95],
-[2,"🖍️","Canetinha Hidrográfica Neo Pen 48 Cores Compactor","Estojo com 48 cores de canetinhas.",69.90],
-[2,"🖍️","Canetinha Hidrográfica Jumbo 6 Cores Compactor","Estojo com 6 canetinhas jumbo.",17.50],
-[2,"🖍️","Canetinha Hidrográfica Jumbo 12 Cores Compactor","Estojo com 12 canetinhas jumbo.",29.95],
-[2,"✏️","Lápis de Cor Super Ponta 4,0 mm 12 Cores Tris","Caixa com 12 lápis de cor de ponta grossa.",26.90],
-[2,"✏️","Lápis de Cor Mega Soft Color 36 Cores Tris","Caixa com 36 lápis de cor da Tris.",69.90],
-[2,"✏️","Kit Escolar Ecolápis de Cor Caras e Cores 12 Cores + 6 Tons de Pele Faber-Castell","Kit com 12 cores e 6 tons de pele.",33.20],
-[3,"📓","Caderno Dessin Notes Pólen 9x13 cm","Caderno de bolso da Dessin. Preço a partir de.",5.95],
-[3,"📓","Caderneta 1/8 Stitch Foroni","Caderneta Foroni com tema Stitch.",24.90],
-[3,"📓","Caderno Colegial 1 Matéria Stitch Foroni","Caderno colegial de 1 matéria, tema Stitch.",42.90],
-[3,"📓","Caderno Colegial 10 Matérias Stitch Foroni","Caderno colegial de 10 matérias, tema Stitch.",72.90],
-[3,"📓","Caderno Universitário 10 Matérias Stitch Foroni","Caderno universitário de 10 matérias.",78.90],
-[3,"📓","Caderno Colegial 1 Matéria 80 fls Doce Florada Off White Cicero","Caderno Cicero com 80 folhas.",66.50],
-[3,"📓","Caderno Colegial 1 Matéria 80 fls Melissa Max Bloomy Cicero","Caderno Cicero com 80 folhas.",72.40],
-[3,"📔","Caderno Universitário 10 Matérias 160 fls Bossa Nova Boemia Cicero","Caderno Cicero com 160 folhas.",99.90],
-[3,"📔","Caderno Criativo Argolado A5 Jardim Off White Cicero","Caderno argolado A5 da Cicero.",124.90],
-[3,"📔","Caderno Criativo Colegial com Divisórias Woodland Cadersil","Caderno criativo com divisórias.",63.90],
-[3,"📒","Mini Caderno Argolado para Ficha Pautada Cute Cat Cadersil","Mini caderno argolado da Cadersil.",46.90],
-[3,"📒","Fichário Caderno Argolado Colegial Cute Cat Cadersil","Fichário colegial. Preço a partir de.",75.90],
-[3,"📒","Caderneta Pautada Verde Clássica 14x21 Cicero","Caderneta pautada da Cicero.",35.90],
-[3,"📄","Refil Caderno Organizador A5 Offset Pontilhado Cicero","Refil pontilhado em tamanho A5.",32.15],
-[3,"📄","Refil Bloco de Fichário Colegial/B5 Pautado Folha Preta 80 g Nali","Refil pautado de folha preta.",29.90],
-[4,"✏️","Apontador com Depósito Abóbora Boo Tris Avulso","Apontador com depósito, tema abóbora.",7.95],
-[4,"🧽","Borracha Tutti Frutti Brw","Borracha Brw da linha Tutti Frutti.",19.90],
-[4,"📎","Pen Loop Prata - Clip Porta Caneta Tilibra","Clip porta-caneta prata da Tilibra.",14.50],
-[4,"📎","Aplicador Prendedor de Papel 16 mm Tilibra","Aplicador de prendedor de papel Tilibra.",22.50],
-[4,"🖥️","Lousa Mágica Digital LCD 8,5 Polegadas Tilibra","Lousa digital LCD de 8,5 polegadas.",29.90],
-[4,"📏","Reforço Plástico Auto Adesivo Yes","Reforço plástico autoadesivo da Yes.",8.70],
-[5,"📅","Calendário de Parede 2027 Vertical Redoma","Calendário de parede vertical 2027.",34.95],
-[5,"📅","Calendário e Planner de Parede 2027 A3 Dessin","Calendário e planner de parede A3, 2027.",40.25],
-[5,"📘","Agenda 2027 Executiva Semanal Senior Weekly São Domingos / Animativa","Agenda executiva semanal 2027.",54.90],
-[5,"📘","Agenda 2027 Executiva Pocket Case São Domingos / Animativa","Agenda executiva pocket 2027.",69.90],
-[6,"✉️","25 Envelopes Coloridos para Carta e Convites 114x162 mm Foroni","Pacote com 25 envelopes coloridos.",25.00],
-[6,"✉️","100 Envelopes Coloridos para Carta e Convites 114x162 mm Foroni","Pacote com 100 envelopes coloridos.",65.00]
-].map((p,i)=>({id:i,cat:p[0],ico:p[1],nome:p[2],desc:p[3],preco:p[4],img:"",estoque:null,dest:/Giz de Rosto|Haribo|Neo Pen 12|Caderneta 1\/8|Tutti|Lousa|Agenda 2027 Executiva Semanal|Calendário de Parede 2027/.test(p[2])}));
+[1,"🎨","Giz de Rosto Toy Fashion 4 Cores Tris","Giz de rosto em 4 cores da marca Tris.",21.5,"A linha Tris Toy cria memórias especiais através de brincadeiras que exploram incríveis descobertas. Um mundo repleto de alegria, diversão e imaginação.\nO Giz de Rosto, com seu corpo plástico e retrátil que não suja as mãos, formato ergonômico, é ideal para as mãozinhas dos pequenos praticarem sua criatividade de forma segura e divertida!\nCom 4 cores vibrantes, atóxicas e fashion, o giz facial é super macio para pintar e criar diferentes formas e desenhos na pele."],
+[1,"📝","Bloco de Anotações Capivara com Patinete Dessin","Bloco de anotações Dessin com estampa fofa.",9.9,"Bloco de anotações da Dessin com estampa de capivara andando de patinete. Bom para recados, listas e lembretes do dia a dia."],
+[2,"🖍️","Marca Texto Lumini Ex Slim Cis Avulsa","Marca-texto slim da Cis, vendido avulso.",5.9,"Marca-texto Lumini Ex Slim, da Cis, vendido por unidade. Formato slim, bom para destacar textos em livros, apostilas e cadernos."],
+[2,"🖍️","Marca Texto Fluo Brw Avulsa","Marca-texto Fluo da Brw, vendido avulso.",3.5,"Marca-texto Fluo, da Brw, vendido por unidade. Para destacar os pontos importantes dos estudos e do trabalho."],
+[2,"🖍️","Marca Texto Fluo Amarelo cx 12 Brw","Caixa com 12 marca-textos Fluo amarelos.",29,"Caixa com 12 marca-textos Fluo amarelos da Brw. Boa pedida para estudantes, escritórios e quem destaca muito."],
+[2,"🖍️","Marca Texto Gel Compactor Avulso","Marca-texto em gel da Compactor.",10.95,"Marca-texto em gel da Compactor, vendido por unidade. Uma forma diferente de destacar textos e deixar as anotações coloridas."],
+[2,"🖌️","Marcador Artístico Giz Líquido 6mm Evoke Brw","Marcador de giz líquido com ponta de 6 mm.",14.9,"Marcador artístico de giz líquido da Evoke (Brw), com ponta de 6 mm. Indicado para letreiros, quadros e trabalhos criativos."],
+[2,"🖌️","Marcador Criativo Flow 2 Pontas Cis Avulso","Marcador de duas pontas da Cis. Preço a partir de.",10.9,"Marcador criativo Flow de duas pontas, da Cis, vendido por unidade. Duas espessuras em uma só caneta, para escrever e colorir."],
+[2,"🎨","Kit Marcador Criativo Flow Estojo 24 Cores Cis","Estojo com 24 cores de marcador criativo.",269,"Estojo com 24 cores de marcadores criativos Flow, da Cis. Um kit completo para lettering, desenhos e agendas coloridas."],
+[2,"🖊️","Kit Caneta Esferográfica Retrátil Haribo Compactor","Kit de canetas retráteis da linha Haribo.",10.3,"Kit de canetas esferográficas retráteis da linha Haribo, da Compactor. Práticas para o dia a dia, sem tampa para perder."],
+[2,"🖊️","Kit Marca Texto + Caneta Haribo Compactor","Kit com marca-texto e caneta da linha Haribo.",15.9,"Kit com marca-texto e caneta da linha Haribo, da Compactor. Duas peças para estudar, anotar e destacar."],
+[2,"🖊️","Caneta Energel Retrátil Black Colors 0,5 Pentel","Caneta gel retrátil Pentel, vendida avulsa.",14.5,"Caneta gel retrátil Energel Black Colors, da Pentel, ponta 0,5 mm, vendida por unidade. Escrita fina para anotações e agendas."],
+[2,"🖊️","Caneta Energel Retrátil 1,0 Pentel Avulsa","Caneta gel retrátil Pentel de ponta 1,0.",10.9,"Caneta gel retrátil Energel, da Pentel, ponta 1,0 mm, vendida por unidade. Traço mais grosso para quem gosta de escrita marcada."],
+[2,"🖊️","Caneta Hi Tecpoint V5 0,5 mm Pilot Avulsa","Caneta Pilot de ponta fina, vendida avulsa.",31.6,"Caneta Hi-Tecpoint V5, da Pilot, ponta 0,5 mm, vendida por unidade. Traço fino e preciso para escrever e desenhar."],
+[2,"🖊️","Caneta Gel 0,5 mm Abacatinho Tilibra","Caneta gel Tilibra com tema abacatinho.",16.95,"Caneta gel de 0,5 mm da Tilibra com tema de abacatinho. Para quem gosta de material de escritório fofo."],
+[2,"🖊️","Caneta Esferográfica Gel Spiro 0,7 Cis Avulsa","Caneta gel Spiro da Cis, vendida avulsa.",4.5,"Caneta esferográfica gel Spiro, da Cis, ponta 0,7 mm, vendida por unidade. Para o uso diário no estudo e no trabalho."],
+[2,"🖊️","Caneta Esferográfica 10 Cores Astro Tris","Caneta esferográfica com 10 cores da Tris.",29.9,"Caneta esferográfica da Tris com 10 cores em uma só. Ajuda a organizar anotações e estudos com mais cor."],
+[2,"🖊️","Refil Caneta Energel 0,7 mm Pentel c/3","Pacote com 3 refis para caneta Energel.",26.5,"Pacote com 3 refis de 0,7 mm para canetas Energel, da Pentel. Reponha a carga e continue usando a sua caneta favorita."],
+[2,"🖍️","Canetinha Hidrográfica Neo Pen Mini 6 Cores Compactor","Estojo com 6 canetinhas mini.",7.5,"Estojo com 6 canetinhas hidrográficas Neo Pen Mini, da Compactor. Tamanho compacto para levar na mochila e colorir em qualquer lugar."],
+[2,"🖍️","Canetinha Hidrográfica Neo Pen 12 Cores Compactor","Estojo com 12 canetinhas hidrográficas.",13.95,"Estojo com 12 canetinhas hidrográficas Neo Pen, da Compactor. Cores variadas para desenhos, trabalhos escolares e lazer."],
+[2,"🖍️","Canetinha Hidrográfica Neo Pen 48 Cores Compactor","Estojo com 48 cores de canetinhas.",69.9,"Estojo com 48 cores de canetinhas hidrográficas Neo Pen, da Compactor. Muita variedade de tons para quem gosta de colorir com detalhes."],
+[2,"🖍️","Canetinha Hidrográfica Jumbo 6 Cores Compactor","Estojo com 6 canetinhas jumbo.",17.5,"Estojo com 6 canetinhas hidrográficas Jumbo, da Compactor. Linha Jumbo, para colorir áreas maiores com facilidade."],
+[2,"🖍️","Canetinha Hidrográfica Jumbo 12 Cores Compactor","Estojo com 12 canetinhas jumbo.",29.95,"Estojo com 12 canetinhas hidrográficas Jumbo, da Compactor. Linha Jumbo, para colorir áreas maiores com facilidade."],
+[2,"✏️","Lápis de Cor Super Ponta 4,0 mm 12 Cores Tris","Caixa com 12 lápis de cor de ponta grossa.",26.9,"Caixa com 12 lápis de cor Super Ponta, da Tris, com mina de 4,0 mm. Para colorir desenhos, mapas e trabalhos escolares."],
+[2,"✏️","Lápis de Cor Mega Soft Color 36 Cores Tris","Caixa com 36 lápis de cor da Tris.",69.9,"Caixa com 36 lápis de cor Mega Soft Color, da Tris. Grande variedade de tons para ilustrações e para colorir com mais detalhes."],
+[2,"✏️","Kit Escolar Ecolápis de Cor Caras e Cores 12 Cores + 6 Tons de Pele Faber-Castell","Kit com 12 cores e 6 tons de pele.",33.2,"Kit escolar Ecolápis de cor Caras & Cores, da Faber-Castell, com 12 cores e 6 tons de pele. Ótimo para desenhar pessoas com mais variedade de tons."],
+[3,"📓","Caderno Dessin Notes Pólen 9x13 cm","Caderno de bolso da Dessin. Preço a partir de.",5.95,"Dessin Notes, Ideal Para Rascunho, Desenho, Anotações E Muito Mais!\nCapa Flexível\nAcabamento Grampeado\nContém 30 Folhas\nMiolo Pólen 70g\nTamanho 9x13"],
+[3,"📓","Caderneta 1/8 Stitch Foroni","Caderneta Foroni com tema Stitch.",24.9,"Caderneta 1/8 com tema Stitch, da Foroni. Tamanho pequeno para anotações rápidas, listas e recados."],
+[3,"📓","Caderno Colegial 1 Matéria Stitch Foroni","Caderno colegial de 1 matéria, tema Stitch.",42.9,"Caderno colegial de 1 matéria com tema Stitch, da Foroni. Para as aulas e os estudos de quem é fã do personagem."],
+[3,"📓","Caderno Colegial 10 Matérias Stitch Foroni","Caderno colegial de 10 matérias, tema Stitch.",72.9,"Caderno colegial de 10 matérias com tema Stitch, da Foroni. Para organizar várias disciplinas em um só caderno."],
+[3,"📓","Caderno Universitário 10 Matérias Stitch Foroni","Caderno universitário de 10 matérias.",78.9,"Caderno universitário de 10 matérias com tema Stitch, da Foroni. Espaço para organizar as disciplinas do semestre."],
+[3,"📓","Caderno Colegial 1 Matéria 80 fls Doce Florada Off White Cicero","Caderno Cicero com 80 folhas.",66.5,"Caderno colegial de 1 matéria, 80 folhas, modelo Doce Florada, na cor Off White, da Cicero. Para estudos e anotações com estilo."],
+[3,"📓","Caderno Colegial 1 Matéria 80 fls Melissa Max Bloomy Cicero","Caderno Cicero com 80 folhas.",72.4,"Caderno colegial de 1 matéria, 80 folhas, modelo Melissa Max Bloomy, da Cicero. Uma opção bonita para as aulas e anotações."],
+[3,"📔","Caderno Universitário 10 Matérias 160 fls Bossa Nova Boemia Cicero","Caderno Cicero com 160 folhas.",99.9,"Caderno universitário de 10 matérias, 160 folhas, modelo Bossa Nova Boêmia, da Cicero. Espaço de sobra para várias disciplinas."],
+[3,"📔","Caderno Criativo Argolado A5 Jardim Off White Cicero","Caderno argolado A5 da Cicero.",124.9,"Caderno criativo argolado A5, modelo Jardim Off White, da Cicero. O sistema argolado permite organizar as folhas do seu jeito."],
+[3,"📔","Caderno Criativo Colegial com Divisórias Woodland Cadersil","Caderno criativo com divisórias.",63.9,"Caderno criativo colegial com divisórias, modelo Woodland, da Cadersil. As divisórias ajudam a separar assuntos e matérias."],
+[3,"📒","Mini Caderno Argolado para Ficha Pautada Cute Cat Cadersil","Mini caderno argolado da Cadersil.",46.9,"Mini caderno argolado para fichas pautadas, modelo Cute Cat, da Cadersil. Compacto, ótimo para resumos e estudos rápidos."],
+[3,"📒","Fichário Caderno Argolado Colegial Cute Cat Cadersil","Fichário colegial. Preço a partir de.",75.9,"Fichário caderno argolado colegial, modelo Cute Cat, da Cadersil. Permite reorganizar as folhas e atualizar o conteúdo."],
+[3,"📒","Caderneta Pautada Verde Clássica 14x21 Cicero","Caderneta pautada da Cicero.",35.9,"Caderneta pautada verde clássica, formato 14x21 cm, da Cicero. Boa para anotações, rascunhos e registros do dia a dia."],
+[3,"📄","Refil Caderno Organizador A5 Offset Pontilhado Cicero","Refil pontilhado em tamanho A5.",32.15,"Refil para caderno organizador A5, folha pontilhada offset, da Cicero. Para planejar, fazer listas e desenhar com guias de pontos."],
+[3,"📄","Refil Bloco de Fichário Colegial/B5 Pautado Folha Preta 80 g Nali","Refil pautado de folha preta.",29.9,"Refil de bloco para fichário colegial/B5, pautado, com folha preta de 80 g, da Nali. Para repor folhas e dar um visual diferente aos seus cadernos."],
+[4,"✏️","Apontador com Depósito Abóbora Boo Tris Avulso","Apontador com depósito, tema abóbora.",7.95,"Apontador com depósito Boo!, em formato de abóbora, perfeito os apaixonados por Halloween.\nPossui lâmina antiferrugem para maior durabilidade e compartimento que armazena os resíduos, mantendo seu espaço limpo e organizado.\nVenda Unitária"],
+[4,"🧽","Borracha Tutti Frutti Brw","Borracha Brw da linha Tutti Frutti.",19.9,"Detalhes:\n4 mini borrachas, em embalagem de lancheira\nNão tóxico\nProduto Certificado INMETRO - Registro 003389/2018"],
+[4,"📎","Pen Loop Prata - Clip Porta Caneta Tilibra","Clip porta-caneta prata da Tilibra.",14.5,"Chega de ficar procurando sua caneta! O pen loop clip é a solução perfeita para isso. Com esse acessório, você prende sua caneta em cadernos, agendas, planners e outros materiais do dia a dia.\nO produto tem design moderno, com gravação à laser e material expansivo.\nCor: Prata\nTamanho: 4,1cm x 1,2cm x 1,5cm"],
+[4,"📎","Aplicador Prendedor de Papel 16 mm Tilibra","Aplicador de prendedor de papel Tilibra.",22.5,"Prendedor para papel reutilizável\n1 aplicador com extrator integrado\n8 prendedores reutilizáveis de 16mm\nMarca: Tilibra\nEstrutura: Plástica\nResistente"],
+[4,"🖥️","Lousa Mágica Digital LCD 8,5 Polegadas Tilibra","Lousa digital LCD de 8,5 polegadas.",29.9,"A Lousa Mágica Digital LCD de 8,5 Polegadas é uma ótima opção para estimular o desenvolvimento de habilidades motoras finas, criatividade e imaginação em crianças a partir de 3 anos.\nCom design portátil e leve, conta com uma tela LCD sensível à pressão e vem com uma caneta para criação de desenhos e para a prática da escrita de números e letras. O produto também possui uma trava e um botão de apagar, oferecendo às crianças a liberdade de recomeçar quantas vezes quiserem.\nAcompanha: 1 caneta\nPara desenhar, escrever e pintar\nSistema de trava\nProduto Certificado INMETRO (Brinquedos/Segurança) - Registro 000 584/2024"],
+[4,"📏","Reforço Plástico Auto Adesivo Yes","Reforço plástico autoadesivo da Yes.",8.7,"Reforço plástico autoadesivo, da Yes. Protege e reforça os furos das folhas de fichário e pastas."],
+[5,"📅","Calendário de Parede 2027 Vertical Redoma","Calendário de parede vertical 2027.",34.95,"13 folhas\nOffset 150g/m2\nFormato 150×700mm\nAtribuições: calendário de parede, visão semanal e mensal, contagem das semanas, espaço para anotações pessoais e agendamentos, fases da lua, serrilha para destaque das folhas."],
+[5,"📅","Calendário e Planner de Parede 2027 A3 Dessin","Calendário e planner de parede A3, 2027.",40.25,"O calendário de parede da Dessin é ótimo para quem quer estar sempre de olho nos compromissos.\nTem espaço para escrita nos dias e linhas para anotações em cada mês.\nTamanho A3 - 42x30cm"],
+[5,"📘","Agenda 2027 Executiva Semanal Senior Weekly São Domingos / Animativa","Agenda executiva semanal 2027.",54.9,"Agenda Semanal Senior Weekly - 1200148\nCapa almofadada em couro sintético\nFitilho marcador de página\nVisão Semanal\nDados Pessoais\nCalendário\nAniversários\nContabilidade\nPlanejamento\nInformações gerais\nEndereços e telefones\nHorário das 7h-22h\nTamanho: 200mm x 275mm\n144 paginas"],
+[5,"📘","Agenda 2027 Executiva Pocket Case São Domingos / Animativa","Agenda executiva pocket 2027.",69.9,"Desenvolvida para quem busca organização, praticidade e funcionalidade em todos os momentos, a Agenda Anual Costurada Pocket Case da Animativa é muito mais do que um item de planejamento: é um acessório completo para acompanhar sua rotina com estilo e eficiência. Com suporte para caneta, bolsa na capa, fitilho marcador e mensagens diárias, oferece recursos pensados para facilitar o controle dos seus compromissos.\nCaracterísticas do produto:\nColeção: Pocket Case\nAtributos: agenda anual\nEncadernação: costurada\nAcessórios: fitilho marcador de páginas, suporte para caneta e bolsa na capa\nFolhas: 176 folhas\nFormato: 14,2 x 20,7 cm\nHorário: das 8h às 19h30\nDiferencial: mensagens diárias"],
+[6,"✉️","25 Envelopes Coloridos para Carta e Convites 114x162 mm Foroni","Pacote com 25 envelopes coloridos.",25,"Envelope Colorido\nIdeal para Convite de Casamento, Bodas, Formatura, Aniversário e eventos diversos.\nTamanho: 114mm x 162mm\nGramatura: 80 g/m²\nO tom das cores pode alterar conforme a resolução da tela\nSelecione a cor desejada.\nNa opção sortido, as cores são enviadas aleatoriamente."],
+[6,"✉️","100 Envelopes Coloridos para Carta e Convites 114x162 mm Foroni","Pacote com 100 envelopes coloridos.",65,"100 Envelope Colorido\nIdeal para Convite de Casamento, Bodas, Formatura, Aniversário e eventos diversos.\nTamanho: 114mm x 162mm\nGramatura: 80 g/m²\nO tom das cores pode alterar conforme a resolução da tela\nSelecione a cor desejada.\nNa opção sortido, as cores são enviadas aleatoriamente."]
+].map((p,i)=>({id:i,cat:p[0],ico:p[1],nome:p[2],desc:p[3],preco:p[4],det:p[5],img:"",estoque:null,dest:/Giz de Rosto|Haribo|Neo Pen 12|Caderneta 1\/8|Tutti|Lousa|Agenda 2027 Executiva Semanal|Calendário de Parede 2027/.test(p[2])}));
 
+const DET=Object.fromEntries(P.map(p=>[p.nome,p.det]));
 const R=v=>v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
 const $=s=>document.querySelector(s);
 let cat=0,termo="",cart={};
@@ -413,7 +450,7 @@ const esc=t=>String(t).replace(/"/g,"&quot;");
 /* foto do produto; se falhar, volta para o emoji */
 const pic=p=>p.img?`<img src="${esc(p.img)}" alt="" loading="lazy" onerror="this.parentNode.textContent='${p.ico}'">`:p.ico;
 const cor=p=>(p.cat-1)%6+1;
-const card=p=>{const fim=p.estoque===0;return `<article class="card"><div class="pic c${cor(p)}" role="img" aria-label="Imagem do produto: ${esc(p.nome)}">${pic(p)}</div><div class="info"><span class="cat-l">${CATS[p.cat]}</span><h3>${p.nome}</h3><div class="price">${R(p.preco)}</div>${p.estoque>0&&p.estoque<=5?`<small class="est">Restam ${p.estoque}</small>`:""}<button class="btn" data-add="${p.id}"${fim?" disabled":` aria-label="Adicionar ${esc(p.nome)} ao carrinho"`}>${fim?"Esgotado":"🛒 Adicionar"}</button></div></article>`};
+const card=p=>{const fim=p.estoque===0;return `<article class="card" data-id="${p.id}"><div class="pic c${cor(p)}" role="img" aria-label="Imagem do produto: ${esc(p.nome)}">${pic(p)}</div><div class="info"><span class="cat-l">${CATS[p.cat]}</span><h3><a class="plink" href="#produto-${p.id}">${p.nome}</a></h3><div class="price">${R(p.preco)}</div>${p.estoque>0&&p.estoque<=5?`<small class="est">Restam ${p.estoque}</small>`:""}<button class="btn" data-add="${p.id}"${fim?" disabled":` aria-label="Adicionar ${esc(p.nome)} ao pedido"`}>${fim?"Esgotado":"🛒 Adicionar ao Pedido"}</button></div></article>`};
 /* respeita o estoque informado na planilha */
 const podeAdd=id=>{const m=P[id].estoque;if(m!==null&&(cart[id]||0)>=m){toast("Você já colocou todo o estoque deste produto no carrinho");return false}return true};
 function render(){
@@ -422,7 +459,7 @@ function render(){
 }
 document.addEventListener("click",e=>{
   const b=e.target.closest("[data-add]"); if(!b) return;
-  const id=+b.dataset.add; if(!podeAdd(id)) return; cart[id]=(cart[id]||0)+1; draw(); toast(P[id].nome+" foi adicionado ao carrinho");
+  const id=+b.dataset.add; if(!podeAdd(id)) return; cart[id]=(cart[id]||0)+1; draw(); toast(P[id].nome+" foi adicionado ao pedido");
 });
 
 /* ---------- Carrinho ---------- */
@@ -441,7 +478,7 @@ function draw(){
   $("#ent").textContent=!ids.length?"—":(L?(L[1]===null?"Indisponível":R(frete)):"Selecione o local");
   {const ja=L&&L[1]===null; $("#fmsg").className=ja?"alerta":""; $("#fmsg").textContent=ja?"Não entregamos neste local. Escolha outro para finalizar o pedido.":""}
   $("#tot").textContent=R(sub+frete); total=sub+frete; entrega=frete;
-  $("#cont").textContent=qtd;
+  $("#cont").textContent=qtd; $("#cont2").textContent=qtd;
 }
 $("#items").addEventListener("click",e=>{
   const t=e.target; const g=k=>t.dataset[k];
@@ -463,29 +500,37 @@ $("#fin").onclick=()=>{
   if(!Object.keys(cart).length) return toast("Adicione produtos antes de finalizar o pedido");
   if(loc===""){ avisoFrete("Escolha o local de entrega para finalizar o pedido."); return; }
   if(LOCAIS[loc][1]===null){ avisoFrete("Não entregamos neste local. Escolha outro para finalizar o pedido."); return; }
+  if($("#cnome").value.trim().length<2){ avisoFrete("Digite seu nome para finalizar o pedido.","cnome"); return; }
+  if($("#cend").value.trim().length<8){ avisoFrete("Digite seu endereço completo (rua, número e bairro) para finalizar o pedido.","cend"); return; }
   enviarWhatsApp();
 };
 
 /* ---------- Finalizar pelo WhatsApp ---------- */
-const WHATSAPP="5527998632825"; // DDI 55 + DDD + número, só dígitos: troque pelo da sua loja
+let WHATSAPP="5527998632825", NOME="Papelaria Aurora"; // DDI 55 + DDD + número, só dígitos: troque pelo da sua loja
 let total=0,entrega=0,loc="";
 /* ---------- Frete por local: edite aqui (valor null = não entregamos) ---------- */
-const LOCAIS=[["Lugar X",5],["Lugar Y",10],["Lugar Z",15],["Lugar J",null]];
-$("#local").innerHTML='<option value="">Selecione o local…</option>'+LOCAIS.map((l,i)=>`<option value="${i}">${l[0]} – ${l[1]===null?"não entregamos":R(l[1])}</option>`).join("");
-$("#local").onchange=e=>{loc=e.target.value;document.querySelector(".fr").classList.remove("erro");draw()};
-/* aviso grande e vermelho quando falta escolher o frete */
-function avisoFrete(m){
-  const f=$("#fmsg"); f.textContent=m; f.className="alerta";
-  const l=document.querySelector(".fr"); l.classList.remove("erro"); void l.offsetWidth; l.classList.add("erro");
-  $("#local").focus(); if(navigator.vibrate) navigator.vibrate(150);
+let LOCAIS=[["Lugar X",5],["Lugar Y",10],["Lugar Z",15],["Lugar J",null]];
+function montarLocais(){
+  $("#local").innerHTML='<option value="">Selecione o local…</option>'+LOCAIS.map((l,i)=>`<option value="${i}">${l[0]} – ${l[1]===null?"não entregamos":R(l[1])}</option>`).join("");
+  loc="";
 }
+montarLocais();
+$("#local").onchange=e=>{loc=e.target.value;document.querySelectorAll(".fr").forEach(x=>x.classList.remove("erro"));draw()};
+/* aviso grande e vermelho quando falta escolher o frete */
+function avisoFrete(m,campo="local"){
+  const f=$("#fmsg"); f.textContent=m; f.className="alerta";
+  document.querySelectorAll(".fr").forEach(x=>x.classList.remove("erro"));
+  const el=$("#"+campo), l=el.closest(".fr"); void l.offsetWidth; l.classList.add("erro");
+  el.focus(); if(navigator.vibrate) navigator.vibrate(150);
+}
+document.querySelectorAll("#cnome,#cend").forEach(i=>i.addEventListener("input",()=>i.closest(".fr").classList.remove("erro")));
 /* todos os botões de WhatsApp usam o número definido em WHATSAPP */
 document.querySelectorAll("[data-zap]").forEach(a=>a.href="https://wa.me/"+WHATSAPP);
 function enviarWhatsApp(){
   const linhas=Object.keys(cart).map(id=>{const p=P[id],q=cart[id];return `${q}x ${p.nome} – ${R(p.preco*q)}`});
-  let msg=`Olá, Papelaria Aurora! Gostaria de fazer este pedido:\n\n${linhas.join("\n")}\n\n`;
+  let msg=`Olá, ${NOME}! Gostaria de fazer este pedido:\n\n${linhas.join("\n")}\n\n`;
   msg+=`Entrega (${LOCAIS[loc][0]}): ${R(entrega)}\n`;
-  msg+=`Total: ${R(total)}`;
+  msg+=`Total: ${R(total)}\n\nNome: ${$("#cnome").value.trim()}\nEndereço: ${$("#cend").value.trim()}`;
   const url="https://wa.me/"+WHATSAPP+"?text="+encodeURIComponent(msg);
   const a=document.createElement("a"); // link real em nova aba (mais compatível com celulares)
   a.href=url; a.target="_blank"; a.rel="noopener noreferrer";
@@ -522,12 +567,71 @@ function lerPlanilha(t){
     if(!nome||isNaN(preco)||/^n[aã]o$/i.test(g("ativo"))) return;
     const c=g("categoria")||"Outros"; let ci=cats.indexOf(c); if(ci<0) ci=cats.push(c)-1;
     const e=parseInt(g("estoque"),10);
-    out.push({id:out.length,cat:ci,ico:g("emoji")||"🛍️",nome,desc:g("descricao"),preco,img:foto(g("foto")),estoque:isNaN(e)?null:Math.max(e,0),dest:/^sim$/i.test(g("destaque"))});
+    out.push({id:out.length,cat:ci,ico:g("emoji")||"🛍️",nome,desc:g("descricao"),det:g("detalhes")||DET[nome]||g("descricao"),preco,img:foto(g("foto")),estoque:isNaN(e)?null:Math.max(e,0),dest:/^sim$/i.test(g("destaque"))});
   });
   return {cats,out};
 }
+
+/* ---------- Página do produto (abre ao clicar no produto) ---------- */
+let veioDaLista=false;
+function abrirDetalhe(id){
+  const p=P[id], fim=p.estoque===0;
+  $("#dcorpo").innerHTML=`<div class="dpic c${cor(p)}" role="img" aria-label="Imagem do produto: ${esc(p.nome)}">${pic(p)}</div>
+  <div class="dinfo"><span class="cat-l">${CATS[p.cat]}</span><h2>${p.nome}</h2><div class="price">${R(p.preco)}</div>
+  ${p.estoque>0&&p.estoque<=5?`<small class="est">Restam ${p.estoque}</small>`:""}
+  <button class="btn" data-add="${p.id}"${fim?" disabled":""}>${fim?"Esgotado":"🛒 Adicionar ao Pedido"}</button>
+  <h3>Descrição</h3><p class="ddesc">${p.det||p.desc}</p>
+  <p class="ddesc">Dúvidas sobre este produto? <a href="https://wa.me/${WHATSAPP}" target="_blank" rel="noopener">Chame no WhatsApp</a>.</p></div>`;
+  $("#detalhe").hidden=false; $("#detalhe").scrollTop=0; document.body.style.overflow="hidden"; $("#voltar").focus();
+}
+function fecharDetalhe(){ $("#detalhe").hidden=true; document.body.style.overflow=""; }
+function rota(e){
+  const m=location.hash.match(/^#produto-(\d+)$/);
+  if(m&&P[+m[1]]){ if(e) veioDaLista=!/#produto-/.test(e.oldURL); abrirDetalhe(+m[1]); } else fecharDetalhe();
+}
+window.addEventListener("hashchange",rota);
+$("#voltar").onclick=()=>{ if(veioDaLista) history.back(); else location.hash="produtos"; };
+$("#abrir2").onclick=()=>abrir(true);
+/* clicar em qualquer parte do card (menos nos botões) abre a página do produto */
+document.addEventListener("click",e=>{
+  const c=e.target.closest(".card");
+  if(c&&!e.target.closest("button,a")) location.hash="produto-"+c.dataset.id;
+});
+/* logos de WhatsApp, Instagram e Facebook */
+const LOGOS={"zap": "data:image/webp;base64,UklGRowKAABXRUJQVlA4WAoAAAAQAAAAXwAAXwAAQUxQSBQBAAABgBvbtqvmvP/IfwXQAeR0INuAa+xHDAVABZCREco04G0Dzxx5uxVqFBGM3LZxZM32fl35BXpLlDTY6xZn/lHOFt3e4NVHfEhopN3ZrRHcznalJnyQRtpc2a651J9NLbnaXm1KzbuJaif2yzshqLnYk1bx3Wl05FwMomQfjRTfmcY3ToaRfDN+MxoNb52NI/t2+OqCENrTl4k4TtsQpKipk5EkTxUVtfEyUceGYuita6Gm1HUvaMfPE3Z4R5rXzE2uc/UfXLmpfugfvkzkcdi9bJM3u6ULOcXLc/rGufH8+58/EOH/V+d7Ab7X4HsZvlfiezG+1+N7Sb5XxXthvtfGe3l8rwDfi8D3OvC9lN/Sq8H3ggRWUDggUgkAAFAmAJ0BKmAAYAA+PRiIQyIhoRgLH8QgA8S2NGy+AOUgj8FXgPNorT+J/EHMCG87Mf4Xrh9FX3ge4B+pvSk8wH7afs77x3oX/t3qAf1X/L9Z96Bvlu+yx+637X+zjgtmePLO+3fNXek+5f6biL+A+Ub/GcBJy7+jf7fwCtQ7vd/ruYl8MPxD1M/7h5/ugl57/8n+f+AX+af2b/o+sp7OP2q9of9kAtJDzC8jBJ31N6npUnJ08NexNKGe/b5/hEKJSju/U0Hfgsvwk/3CjrKHp+2dfabsBJL41Zj6Lxt4a8SDbaJ455Lt7K+lR86tuJRWtSC2W9j5ipcXHRMGOV3Yja/jHc3H32dwYKl2lb7SRZfsrPhRTjbF7Zkcd89a/QGbuMAXt2b2vfM79foA1bIWLlNEkqNIlfXCg7lSAAD+/KhHOUuOWl5y3j3iU5CiZQ1T+C+sOhA/THSzpIGyRRu3u2TuyereX9edKkmxa26Q+j6/dqmzlHY+O7BN6c5N2vuzlXBVPC/i+lpLoqmyvLLSAlF7ClakuFtiOMYBN9W86MSJl2SwfPlwSlVjDHOk8uiOcm5QgJz1hmrKrGx2odVv7/a9doIOrtFQch9LvJDWbnSSysuEMFb/gG6PnNIb9D8R1SgBJqUMBHDuycv0ceh8qs376xtdCSehLnjj/J9VBqHXW+U8M3DuJMGJ4A0ZBDpr8zkiB4plmiuSOAath15JHcgNnUuc/yJH36N78i+jJlI2IU8NcKhafMqQuvJdtLaJqON+dMvc7YQ8C6JJP87ugz8/wEpRH4RFmq5JHQLTm1latPyIufUb4UDh0KRrQder/gVCpWf5drq+3Vqh5F+t4fSGoMdFD/inVT/2XUoe5afERmsFkEUedd2iWB0W+2hnQV83rx1+0itOnFRzZLiAUCFc5KDVadPr2hwlj85l6UmWJlC2C6yIid/NcakjlH1Rk2V2LUpWKhyiRMg/3+709IsZi1RmeWi9pVOGI6XuUJ2frVAaOXzJvTJr5sYN9EjH29Af12huYkz7vWRFAWLe+updbrnzEjWHHuSzALvJFe4DVpkIRHfbpL2oSCkJf5eyJG+LGuJ1vlgAmy82btHlc5n9TV4sjOe4xc5EfQXTrWphWcw6JJDYD0xL9W4+7qEgfiHv7vCaxfylTZB24boFtMi0FZkhofLE8XtkopIQ7QRVlTTqr6/P/SjuMgblrteggsphGv/MNQBJjEM8ob7cf0FxKNUzizHiseuEgiSgWNljKxULeLYfPc1T4Fi27N4Krr4YCAHuGZ8mJJmu7QFKGyTxv80wE5v4NXejCx0Zb/jF/7J2WEcVpZVxOCl7WuVdhh7MGC/BZMC/BVM3vTTdu+2TsRI6QWisqq50po8gy17H73D2yBj4lGB9JlMnTz00EBT+uQSwzjEsaIq3zvEjYBPakSiuOP+MF6N6L95ZIg4dn+KYT9BG9P5xlHh21YludtM89yHOai7fSn0a1ekOD6Rf07rqTZ7BLmiar6AfeaZjiYKFWnYUXNGym4htXtvS+yEdvHfzVlVd8LZ4ikHT+EVqQ4/29uxH2oJkxEFV1CjT6KMSBHQneutpCmwlwHQn+kypd5kFatufcM83SL+wv3y74udcVHG4tMMUOdi0IKp1fMBKMNu30Hb/Rc3cSdehbfVvjXp12lXSxWgigUFZuHFG7ANYWwOcAjbyEb39pajF44ZKPPjw/5kcyxB9q0C4nzQCDzg7aJ75ptdweDtP4rM9nwmTzFwW2WobROE0kNSTLpC0T/ZZjOsfQ5stWfglY9pIPu63hnJ+TrN7a39N3rro7cTL7w1jXRYwxwGtUVv1TAuc2XSBZdeAcaE6fzVTkxzbNuJr8X+5cqpKdZ69ajl3/oPMeGaH0C0kJnvBfti9Opdwpe0W2S4oT7nZ6S4ltHmLObu5jk9e82PYyNmXlAKcgp85sCV5V0KNzLSaCWoJwFcr27ezOix5J84CTlUpvCS5mHgtufzL6h8cTXOSmWUbc3r8y7Mum1wIIwpMk6j+/OYzTvXESCsIq8tod1PkbMosbsnAtR8Ix6Ykhxw5rEZXLXlqxuIkfYzPj0D+11aK2eWMSrV33Of+aeRkd4Q0YbiRPwPBgxsDySvzI4JwH4fmfjZLW1zX56YPn/8hk1NUTuDn8cWRBoMOAMv/S3Hwl8zv76DSRTEtmczJWDcrVa9fWusd9m0ruSIuFAPVY3ni+lJ5NJMJ0BI02PfStroIX3X2zG4TsyHLlcyvUvSWa5vjfpbCPLlJQRpM/0cZJee0NzFcHOywTQLbDBdPaxgushDA4oxrWW1otoCVP5YlIKpzdz/3nugSSSFzsUph20xRJTu191wzDiQqCmfbWs6c7hIVe/sSG85Y4gGGnriaFR3vEfxo65r3u7I1WzOe2qN3Jfvhs6sP6eJzvjNuLuo2qYTnpQY9osGay+1Npb0teqqeLWF/UTsOvt0ZemdCXZ2EUa8CS6TG53Vdz5fV+Rc+RJS0D1iDcbZPFHe3bnCcsGJKP46417QbDAMHeqze93bA36tCOwWj6hU65aCEQDcNlJL8voDP8FgmN3sQ4ElLfVABsD8yfMSLb9RHgXM7rlb7AjAdx+fVIfN1oUgDzHgAV2oxyjzs/1Y58iNXF8vLu3EMiBn/BIb6RdQp++xKsy3987RMYEZkKw2I1/PizRaeYf5/9dBOX6ESD/8SkeNXEMtMgHbNRIXDCbfLfABIyR/ZqvairZFvuuWuMI2OBZeMXevydB7pnrtv/W0hs5G0QVxoedPH7Dwehqbmfy+XRraLl6u4ixaZCBAsaR+rZcG2QOX6tB29orrOl2YVxfWS9VGe6bUJQZLcHE6o6XOzvAWSaO3EjgCiTYq6gCPy2f2JSkU/2zyyRuuIwvfWPGQ/7P+XLXt4vbaf5V98L3ajSM270AaRVVmmWavtIc1i+PoEPQqNSemW246Uj4cQR2ChyOlY8Fp+0Jy5w2FMnuUIDyXvh3/EJBWA1fNUpo3/VYzh9z4DcWA/4V3g69/iHfxbNre86d/d/8Px0a+S8XpRdHHd+zH3V/W/FoOPpFZSqa8cG2TtRModVuIGEAWpqJn0mmcjpGYqH31DnaisOQqYX9MKNCTaxC7sEvuOhlyScYf1ZS5xHfZpAULmthh0fZYywWj8Kwz2UQQuU2tj5uV0zhgAAAA=", "ig": "data:image/webp;base64,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", "fb": "data:image/webp;base64,UklGRvgEAABXRUJQVlA4WAoAAAAQAAAAXwAAXwAAQUxQSBACAAABoLNtu2m7escYM7ZR27ZtJ//A6OySVVLattHZ+AW2XSVjzO+Nzph7rflVR1dETIBDi62PhSrL460t4DDmIxX/NBbNv9KLVuL5tfl2eiruuf2ZiGYiz6m+/O1HUu/DH733PqSii4SUBc+VBJKfr+9eO2/GjFmzl6xet33fiesvUj0C+Wrj6LrIWukuUx0k8PWC2gDgkkjngOtKiHBbfcA5YxBtjLmhg0iYCSQGmQ2gg6R+IhKLElQjcApKoUS1CNyIBIql8qSqtZoFTkcCxVI+qmCMZp4r4ZDd/NEao4Cwi7FZnDP46+u5S3mvHEycAQCb/F4qKXUrd4HHYRFtgOFrr9y7/+cH35gxF8uQRBlT/TQLmQPPSRmsOcLvPo3MX+A4uBiLjvTCAuZA2CcuwQJ6qkJ2zbJdny5xDvsYlNv/tyAJ0Z2z7A3fQmyak4zds5xgYYsj5ZX+QwdHVoWJMWgzZHDksL5rGHIQuBvFO4s+FwddaRdpslgXW9ptZcjFATgUp8V53QzcXaaaWdR5R9GtOTMr49CXolqC6QzKLadXzWEjg2oGV5nm46AtZSMzGfvXzpZ+kJe9KNZqbyj5ONegaePIclnqN238l00bTEiFeSApsewCF+NwgF7+miVYNPGZ9jOwkP//7KmIZiLPt9Fr5rm92Vd60Uo8vzbH6I8s+uIhP46BQ/Mtj0Qneby1BRxWUDggwgIAAPAPAJ0BKmAAYAA+PRyMRCIhoZOaBNwgA8SgDVta66P+vcRVvXJAeYD9gP2A93L0RbyX6AH6q+mp7I37c+kAno13ewp8YOg//YOrN6EAoBDk+35rlo+OmHv45NgTOKH+3lqlVjXY+OhJ4GiNf8cj1HnMkITitBLJrKKt5uowObCySiP4bElpIAAA/vBtb92LHopvf+cS+SPQIQ/615t4zAOCpUGEGN3390e4rhuIJiY1etCOBqnetNJ2O8r+VIE9aCfTT4Gas5G3JUz9uEla2e1daAEegMqIlm3AMXc4R8Pt8f9vf91nnMsg7SnxD3XAjl85PjWUKMEa3tJbvYHOq4gEsopyTLw9UT3NPfE1CIewxzNAPWA3t7ITYX1YwmU5Py6H4YYXKfV6A+e9fg5IO4W9uU8VqLUT5tzwzP+2p/gg0c6GfK94Hxu6WBr+FqJA6/oOxwa1NX+htf+IDa3nbPOE33O056zZq/G5hWj7RzX7ur3c1YGlMiPdT+892YOCIcSSR+W60w2o26ZqzF2bjv7X/Aa/3YRfjuY5h3OPWpDPpgvLuoYkGKldbXNy6iPOm4P0V4SFxJ4rnv1ssxcPfrRTFw2EpYpGaHDw56lsSzYhpchJD5RYLp4hbfHUEi3HuAR/5nt7fenwoCeOPQOdjGA1eRq6S6BN/DaLiYWDDHPnmlP2Cq/Lq/hrDqI76E7zo3XlHxxfMLHiljv/TefaPrKB/xSswVFjWj3ibL8t9nlfsfwScFX/xAC/ZU06susbzaQ2GNA/OxTqcJeVh60HRh/8GGgnRO1dnvRSdrwqddlUH8ZmYbD/911XpGzBW2DHoxqrCcZakZVjeT5PynhS3L0n4fZKS7JUh7YdTO2JrdgwhCsQUwiCm3oQdp7spkbUAe36yAUxAJQ1rjygaokI0IiNCoVgQaELh1MEjZNwKI6sAAA="};
+document.querySelectorAll("[data-logo]").forEach(i=>i.src=LOGOS[i.dataset.logo]);
+/* ---------- Dados da loja (arquivo dados.json, editado pelo painel admin) ---------- */
+function aplicarLoja(l){
+  if(l.nome){ NOME=l.nome; document.title=NOME+" – Papelaria"; document.querySelectorAll(".logo").forEach(a=>{a.lastChild.textContent=NOME}); }
+  if(l.whatsapp){ WHATSAPP=String(l.whatsapp).replace(/\D/g,""); document.querySelectorAll("[data-zap]").forEach(a=>a.href="https://wa.me/"+WHATSAPP); }
+  const t=(id,v,pre)=>{ if(v) $("#"+id).textContent=pre+v; };
+  t("c-end",l.endereco,"📍 "); t("c-tel",l.telefone,"📞 "); t("c-mail",l.email,"✉️ ");
+  $("#c-zap").textContent="💬 WhatsApp: "+WHATSAPP.replace(/^55(\d{2})(\d{4,5})(\d{4})$/,"($1) $2-$3");
+  if(l.horarios){ const hr=$("#c-hor"); hr.textContent=""; l.horarios.split("\n").forEach(x=>{ if(x.trim()){ const p=document.createElement("p"); p.textContent=x; hr.appendChild(p); } }); }
+  [["ig",l.instagram,"Instagram @"],["fb",l.facebook,"Facebook /"]].forEach(([k,u,pre])=>{
+    if(!u) return;
+    document.querySelectorAll("[data-"+k+"]").forEach(a=>a.href=u);
+    const b=$("#b-"+k); if(b) b.lastChild.textContent=pre+u.replace(/\/+$/,"").split("?")[0].split("/").pop();
+  });
+}
+function aplicarDados(d){
+  const cats=["Todos"],out=[];
+  (d.produtos||[]).forEach(p=>{
+    if(p.ativo===false||!p.nome) return;
+    const c=p.categoria||"Outros"; let ci=cats.indexOf(c); if(ci<0) ci=cats.push(c)-1;
+    const e=(p.estoque===null||p.estoque===undefined||p.estoque==="")?null:Math.max(parseInt(p.estoque,10)||0,0);
+    out.push({id:out.length,cat:ci,ico:p.emoji||"🛍️",nome:p.nome,desc:p.descricao||"",det:p.detalhes||p.descricao||"",preco:Number(p.preco)||0,img:foto(p.foto),estoque:e,dest:!!p.destaque});
+  });
+  if(out.length){ P=out; CATS=cats; }
+  if(d.frete&&d.frete.length) LOCAIS=d.frete.map(f=>[f.local,(f.valor===null||f.valor==="")?null:Number(f.valor)]);
+  montarLocais();
+  if(d.loja) aplicarLoja(d.loja);
+}
 async function iniciar(){
-  if(SHEET_URL){
+  let dados=null;
+  try{ const r=await fetch("dados.json?t="+Date.now()); if(r.ok) dados=await r.json(); }catch(e){}
+  if(dados) aplicarDados(dados);
+  else if(SHEET_URL){
     $("#grade").innerHTML='<p class="empty">Carregando produtos…</p>';
     try{
       const res=await fetch(SHEET_URL+(SHEET_URL.includes("?")?"&":"?")+"t="+Date.now());
@@ -535,7 +639,7 @@ async function iniciar(){
       if(d.out.length){ P=d.out; CATS=d.cats; }
     }catch(e){ console.warn("Planilha indisponível, usando o catálogo padrão",e) }
   }
-  montarFiltros(); render(); draw();
+  montarFiltros(); render(); draw(); rota();
 }
 iniciar();
 </script>

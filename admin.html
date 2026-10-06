@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Painel da loja</title>
+<style>
+:root{--az:#1f6bff;--tx:#14213d;--mu:#55657f;--bg:#f2f5fb;--ln:#d6dfef;--ok:#0f7a3f;--er:#c62828;color-scheme:light;box-sizing:border-box;font-family:system-ui,"Segoe UI",Roboto,sans-serif}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--tx);font-size:16px;line-height:1.45;padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+header{background:var(--tx);color:#fff;padding:calc(env(safe-area-inset-top,0px) + 12px) 16px 0}
+header h1{margin:0 0 10px;font-size:1.15rem;display:flex;justify-content:space-between;align-items:center;gap:8px}
+header h1 button{background:none;border:1px solid #6d7ea3;color:#fff;border-radius:8px;padding:.3rem .7rem;font-size:.85rem;cursor:pointer}
+nav{display:flex;gap:4px;overflow-x:auto}
+nav button{flex:1;white-space:nowrap;border:0;background:none;color:#b8c5e3;font:600 .95rem inherit;padding:.7rem .9rem;border-radius:10px 10px 0 0;cursor:pointer}
+nav button[aria-current="true"]{background:var(--bg);color:var(--tx)}
+main{max-width:720px;margin:0 auto;padding:16px}
+h2{font-size:1.2rem;margin:.2rem 0 .8rem}
+.card{background:#fff;border:1px solid var(--ln);border-radius:14px;padding:16px;margin-bottom:14px}
+label{display:block;font-weight:700;font-size:.92rem;margin:12px 0 4px}
+label small{display:block;font-weight:400;color:var(--mu)}
+input,textarea,select{width:100%;font:inherit;color:inherit;border:1.5px solid var(--ln);border-radius:10px;padding:.7rem .8rem;background:#fff;min-height:46px}
+input:focus,textarea:focus{outline:3px solid #b9d0ff;border-color:var(--az)}
+input[type=checkbox]{width:22px;height:22px;min-height:0;flex:none}
+.chk{display:flex;align-items:center;gap:10px;font-weight:600;margin:12px 0}
+textarea{min-height:90px;resize:vertical}
+.b{border:0;border-radius:12px;padding:.85rem 1.1rem;font:700 1rem inherit;cursor:pointer;background:#e4eaf7;color:var(--tx);min-height:48px}
+.b.p{background:var(--az);color:#fff}.b.d{background:#fde4e4;color:var(--er)}
+.b:disabled{opacity:.6}
+.linha{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.linha .b{flex:1 1 140px}
+.top{display:flex;gap:10px;margin-bottom:12px}.top input{flex:1}
+.item{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:#fff;border:1px solid var(--ln);border-radius:12px;padding:10px;margin-bottom:8px;cursor:pointer;font:inherit;color:inherit}
+.item .t{width:52px;height:52px;border-radius:10px;background:#e4eaf7;display:grid;place-items:center;font-size:1.6rem;overflow:hidden;flex:none}
+.item .t img{width:100%;height:100%;object-fit:cover}
+.item .nm{flex:1;font-weight:700;min-width:0}.item small{display:block;font-weight:400;color:var(--mu)}
+.vazio{color:var(--mu);text-align:center;padding:24px}
+.prev{width:150px;height:150px;border-radius:12px;background:#e4eaf7;display:grid;place-items:center;font-size:3rem;overflow:hidden;margin:6px 0}
+.prev img{width:100%;height:100%;object-fit:cover}
+.loc{display:grid;grid-template-columns:1fr 110px 40px;gap:8px;align-items:center;margin-bottom:8px}
+.loc .nao{grid-column:1/3;display:flex;align-items:center;gap:8px;font-size:.9rem}
+.passos{padding-left:20px}.passos li{margin-bottom:8px}
+#barra{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--ln);padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));display:flex;gap:12px;align-items:center;justify-content:space-between;z-index:10;font-weight:700}
+#barra.sujo{background:#fff6dd}#barra .b{flex:none}
+#aviso{position:fixed;left:12px;right:12px;bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:11;border-radius:12px;padding:12px 14px;font-weight:700;color:#fff;display:none}
+#aviso.ok{background:var(--ok);display:block}#aviso.er{background:var(--er);display:block}#aviso.in{background:var(--tx);display:block}
+.conectar{max-width:520px;margin:0 auto;padding:calc(env(safe-area-inset-top,0px) + 24px) 16px}
+details{margin-top:12px}summary{cursor:pointer;font-weight:700;color:var(--az)}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="aviso" role="status"></div>
+
+<script>
+/* ===== Painel da loja: edita o arquivo dados.json do repositório no GitHub ===== */
+const $=s=>document.querySelector(s);
+const R=v=>Number(v).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+const h=t=>String(t??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const limpa=t=>String(t||"").replace(/[<>]/g,"").trim();
+const num=v=>{v=String(v).replace(/[^\d,.-]/g,"");if(v.includes(","))v=v.replace(/\./g,"").replace(",",".");return parseFloat(v)};
+const enc=s=>btoa(unescape(encodeURIComponent(s)));
+const dec=s=>decodeURIComponent(escape(atob(s.replace(/\s/g,""))));
+const slug=t=>t.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,30)||"produto";
+
+let cfg={},D=null,sha="",sujo=false,fotos={},aba="prod",ed=null,busca="",edFoto="";
+try{cfg=JSON.parse(localStorage.getItem("painel")||"{}")}catch(e){}
+const guardar=()=>{try{localStorage.setItem("painel",JSON.stringify(cfg))}catch(e){}};
+
+/* ---------- conversa com o GitHub ---------- */
+async function gh(path,opt={}){
+  const r=await fetch(`https://api.github.com/repos/${cfg.repo}/contents/${path}`,{cache:"no-store",...opt,
+    headers:{Authorization:"Bearer "+cfg.token,Accept:"application/vnd.github+json","Content-Type":"application/json"}});
+  if(!r.ok){const e=new Error("http");e.status=r.status;throw e}
+  return r.json();
+}
+const erroTxt=e=>e.status===401?"A chave não é válida ou já venceu. Crie uma nova (veja a aba Ajuda)."
+  :e.status===403?"A chave não tem permissão. Ela precisa de \"Contents: Read and write\" neste repositório."
+  :e.status===404?"Não encontrei o repositório ou o arquivo dados.json. Confira o nome do repositório e se o arquivo foi enviado."
+  :e.status===409||e.status===422?"O site mudou enquanto você editava. Toque em Sair, entre de novo e refaça a alteração."
+  :"Não consegui falar com o GitHub. Confira a internet e tente de novo.";
+let tAviso;
+function aviso(t,tipo="in",ms=5000){const a=$("#aviso");a.textContent=t;a.className=tipo;clearTimeout(tAviso);if(ms)tAviso=setTimeout(()=>a.className="",ms)}
+
+async function carregar(){
+  const j=await gh("dados.json"); sha=j.sha; D=JSON.parse(dec(j.content));
+  D.produtos=D.produtos||[]; D.frete=D.frete||[]; D.loja=D.loja||{};
+}
+
+/* ---------- telas ---------- */
+const auto=()=>{const m=location.hostname.match(/^(.+)\.github\.io$/),r=location.pathname.split("/")[1];return m&&r&&!r.endsWith(".html")?m[1]+"/"+r:""};
+function tela(){
+  if(!D){
+    $("#app").innerHTML=`<div class="conectar"><h2>Painel da loja</h2>
+    <p>Conecte este painel ao seu site uma única vez. Depois é só editar e tocar em <b>Publicar</b>.</p>
+    <div class="card">
+      <label>Repositório do site<small>Exemplo: seu-usuario/papelaria</small></label>
+      <input id="repo" value="${h(cfg.repo||auto())}" autocapitalize="off" autocorrect="off">
+      <label>Chave de acesso<small>É a senha especial criada no GitHub (veja o passo a passo abaixo)</small></label>
+      <input id="tok" type="password" value="${h(cfg.token||"")}" autocomplete="off">
+      <div class="linha"><button class="b p" data-a="conectar">Conectar</button></div>
+    </div>
+    <details><summary>Como criar a chave de acesso</summary><ol class="passos">${ajudaChave()}</ol></details></div>`;
+    return;
+  }
+  const abas=[["prod","📦 Produtos"],["ent","🚚 Entrega"],["loja","🏪 Loja"],["aj","❓ Ajuda"]];
+  $("#app").innerHTML=`<header><h1><span>${h(D.loja.nome||"Painel da loja")}</span><button data-a="sair">Sair</button></h1>
+    <nav>${abas.map(a=>`<button data-a="aba" data-v="${a[0]}" aria-current="${aba===a[0]}">${a[1]}</button>`).join("")}</nav></header>
+    <main>${corpo()}</main><div id="barra"></div>`;
+  barra();
+}
+function barra(){
+  const b=$("#barra"); if(!b) return;
+  b.className=sujo?"sujo":"";
+  b.innerHTML=sujo?`<span>● Há mudanças que ainda não estão no site</span><button class="b p" data-a="publicar">Publicar</button>`:`<span>✔ Tudo publicado</span><a href="./" target="_blank" style="color:var(--az)">Ver o site</a>`;
+}
+function marcar(){sujo=true;barra()}
+function corpo(){
+  if(aba==="prod") return ed?formProduto():`<h2>Produtos</h2><div class="top"><input id="busca" placeholder="Buscar produto…" value="${h(busca)}" aria-label="Buscar produto"><button class="b p" data-a="novo">+ Novo</button></div><div id="lista">${lista()}</div>`;
+  if(aba==="ent") return `<h2>Entrega</h2><div class="card"><p style="margin-top:0">Os locais e valores de frete que o cliente escolhe no pedido. Marque <b>Não entregamos</b> para avisar que não atende o local.</p>
+    ${D.frete.map((f,i)=>`<div class="loc"><input data-fi="${i}" data-k="local" value="${h(f.local)}" aria-label="Nome do local" placeholder="Nome do local">
+    <input data-fi="${i}" data-k="valor" inputmode="decimal" value="${f.valor===null?"":String(f.valor).replace(".",",")}" ${f.valor===null?"disabled":""} aria-label="Valor do frete" placeholder="R$ 0,00">
+    <button class="b d" data-a="dellocal" data-i="${i}" aria-label="Remover local">✕</button>
+    <label class="nao"><input type="checkbox" data-fi="${i}" data-k="nao" ${f.valor===null?"checked":""}> Não entregamos neste local</label></div>`).join("")}
+    <button class="b" data-a="addlocal">+ Adicionar local</button></div>`;
+  if(aba==="loja"){
+    const c=[["nome","Nome da loja"],["whatsapp","WhatsApp dos pedidos","Só números, com 55 e DDD. Exemplo: 5527999999999"],["telefone","Telefone"],["email","E-mail"],["endereco","Endereço da loja"],["instagram","Link do Instagram","Cole o endereço completo do perfil"],["facebook","Link do Facebook","Cole o endereço completo da página"]];
+    return `<h2>Dados da loja</h2><div class="card">${c.map(x=>`<label>${x[1]}${x[2]?`<small>${x[2]}</small>`:""}</label><input data-loja="${x[0]}" value="${h(D.loja[x[0]])}" ${x[0]==="whatsapp"?'inputmode="numeric"':""}>`).join("")}
+    <label>Horário de funcionamento<small>Uma linha para cada horário</small></label><textarea data-loja="horarios">${h(D.loja.horarios)}</textarea></div>`;
+  }
+  return `<h2>Como usar</h2><div class="card"><ol class="passos">
+    <li><b>Produtos:</b> toque em um produto para mudar preço, estoque, foto ou descrição. Use <b>+ Novo</b> para cadastrar.</li>
+    <li><b>Entrega:</b> defina os locais atendidos e o valor do frete.</li>
+    <li><b>Loja:</b> altere WhatsApp, telefone, endereço, horários e redes sociais.</li>
+    <li>Quando terminar, toque em <b>Publicar</b> (barra de baixo). O site atualiza em 1 a 2 minutos.</li>
+    <li>O estoque <b>não diminui sozinho</b> quando alguém faz um pedido. Atualize aqui depois de cada venda.</li></ol></div>
+    <div class="card"><b>Criar uma nova chave de acesso</b><ol class="passos">${ajudaChave()}</ol></div>`;
+}
+const ajudaChave=()=>`<li>Entre em <b>github.com</b> com a conta dona do site.</li>
+<li>Toque na sua foto → <b>Settings</b> → role até o fim → <b>Developer settings</b>.</li>
+<li>Abra <b>Personal access tokens → Fine-grained tokens → Generate new token</b>.</li>
+<li>Dê um nome (ex.: Painel da loja) e escolha um prazo de validade.</li>
+<li>Em <b>Repository access</b>, marque <b>Only select repositories</b> e escolha o repositório do site.</li>
+<li>Em <b>Permissions → Repository permissions</b>, ache <b>Contents</b> e escolha <b>Read and write</b>.</li>
+<li>Toque em <b>Generate token</b>, copie o código e cole aqui. Ele só aparece uma vez.</li>`;
+const lista=()=>{
+  const q=busca.toLowerCase();
+  const it=D.produtos.map((p,i)=>[p,i]).filter(x=>x[0].nome.toLowerCase().includes(q)).map(([p,i])=>
+    `<button class="item" data-a="edit" data-i="${i}"><span class="t">${imgSrc(p.foto)?`<img src="${h(imgSrc(p.foto))}" alt="">`:h(p.emoji||"🛍️")}</span>
+    <span class="nm">${h(p.nome)}<small>${R(p.preco)} · ${p.estoque===null||p.estoque===undefined?"sem controle de estoque":"estoque: "+p.estoque}${p.ativo===false?" · OCULTO":""}${p.destaque?" · ⭐ destaque":""}</small></span><span aria-hidden="true">›</span></button>`).join("");
+  return it||'<p class="vazio">Nenhum produto encontrado.</p>';
+};
+const imgSrc=f=>f?(fotos[f]||(/^https?:/.test(f)?"":f)):"";
+function formProduto(){
+  const p=ed.p, cats=[...new Set(D.produtos.map(x=>x.categoria).filter(Boolean))];
+  return `<h2>${ed.i<0?"Novo produto":"Editar produto"}</h2><div class="card">
+  <label>Nome do produto *</label><input id="f-nome" value="${h(p.nome)}">
+  <label>Preço (R$) *</label><input id="f-preco" inputmode="decimal" placeholder="Exemplo: 24,90" value="${p.preco===""?"":String(p.preco).replace(".",",")}">
+  <label>Estoque<small>Deixe vazio se não quiser controlar. Com 0 aparece "Esgotado" no site.</small></label><input id="f-est" inputmode="numeric" value="${p.estoque===null||p.estoque===undefined?"":p.estoque}">
+  <label>Categoria<small>Escolha uma existente ou digite uma nova</small></label><input id="f-cat" list="cats" value="${h(p.categoria)}"><datalist id="cats">${cats.map(c=>`<option value="${h(c)}">`).join("")}</datalist>
+  <label>Foto do produto</label><div class="prev" id="prev">${imgSrc(edFoto)?`<img src="${h(imgSrc(edFoto))}" alt="Foto do produto">`:h(p.emoji||"🛍️")}</div>
+  <div class="linha" style="margin-top:6px"><button class="b" data-a="foto">📷 Escolher foto da galeria</button>${edFoto?'<button class="b d" data-a="semfoto">Remover foto</button>':""}</div>
+  <input id="arq" type="file" accept="image/*" hidden>
+  <label>Emoji<small>Aparece quando o produto não tem foto</small></label><input id="f-emo" value="${h(p.emoji)}" style="max-width:100px">
+  <label>Descrição curta</label><input id="f-desc" value="${h(p.descricao)}">
+  <label>Descrição completa<small>Aparece na página do produto</small></label><textarea id="f-det">${h(p.detalhes)}</textarea>
+  <label class="chk"><input type="checkbox" id="f-ativo" ${p.ativo!==false?"checked":""}> Mostrar este produto no site</label>
+  <label class="chk"><input type="checkbox" id="f-dest" ${p.destaque?"checked":""}> Destaque (aparece primeiro na vitrine)</label>
+  <div class="linha"><button class="b p" data-a="salvarprod">Salvar produto</button><button class="b" data-a="cancelar">Cancelar</button>${ed.i>=0?'<button class="b d" data-a="excluir">Excluir</button>':""}</div></div>`;
+}
+
+/* ---------- ações ---------- */
+async function reduz(file){
+  const bmp=await createImageBitmap(file),k=Math.min(1,900/Math.max(bmp.width,bmp.height)),c=document.createElement("canvas");
+  c.width=Math.round(bmp.width*k);c.height=Math.round(bmp.height*k);
+  const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.drawImage(bmp,0,0,c.width,c.height);
+  return c.toDataURL("image/jpeg",.82);
+}
+const lerForm=()=>({nome:limpa($("#f-nome").value),preco:num($("#f-preco").value),estoque:$("#f-est").value.trim()===""?null:Math.max(parseInt($("#f-est").value,10)||0,0),
+  categoria:limpa($("#f-cat").value)||"Outros",foto:edFoto,emoji:limpa($("#f-emo").value)||"🛍️",descricao:limpa($("#f-desc").value),detalhes:limpa($("#f-det").value),
+  ativo:$("#f-ativo").checked,destaque:$("#f-dest").checked});
+const acao={
+  async conectar(){
+    cfg={repo:$("#repo").value.trim().replace(/^https?:\/\/github\.com\//,"").replace(/\/+$/,""),token:$("#tok").value.trim()};
+    aviso("Conectando…","in",0);
+    try{await carregar();guardar();aviso("Conectado!","ok");tela()}catch(e){aviso(erroTxt(e),"er",9000)}
+  },
+  sair(){if(sujo&&!confirm("Há mudanças não publicadas. Sair mesmo assim?"))return;cfg.token="";guardar();D=null;sujo=false;fotos={};ed=null;tela()},
+  aba(b){if(ed&&!confirm("Descartar a edição deste produto?"))return;ed=null;aba=b.dataset.v;tela()},
+  novo(){ed={i:-1,p:{nome:"",preco:"",estoque:null,categoria:"",foto:"",emoji:"🛍️",descricao:"",detalhes:"",ativo:true,destaque:false}};edFoto="";tela();scrollTo(0,0)},
+  edit(b){const i=+b.dataset.i;ed={i,p:{...D.produtos[i]}};edFoto=D.produtos[i].foto||"";tela();scrollTo(0,0)},
+  cancelar(){ed=null;tela()},
+  foto(){$("#arq").click()},
+  semfoto(){edFoto="";const p=lerForm();ed.p=p;tela()},
+  salvarprod(){
+    const p=lerForm();
+    if(!p.nome){aviso("Digite o nome do produto.","er");return $("#f-nome").focus()}
+    if(!(p.preco>=0)||isNaN(p.preco)){aviso("Digite um preço válido, como 24,90.","er");return $("#f-preco").focus()}
+    if(ed.i<0)D.produtos.push(p);else D.produtos[ed.i]=p;
+    ed=null;marcar();tela();aviso("Produto salvo. Toque em Publicar para colocar no site.","ok");
+  },
+  excluir(){if(!confirm("Excluir este produto? Para só esconder do site, use \"Mostrar este produto no site\"."))return;D.produtos.splice(ed.i,1);ed=null;marcar();tela()},
+  addlocal(){D.frete.push({local:"Novo local",valor:0});marcar();tela()},
+  dellocal(b){D.frete.splice(+b.dataset.i,1);marcar();tela()},
+  async publicar(){
+    const bt=$("#barra .b");bt.disabled=true;aviso("Publicando… não feche esta página.","in",0);
+    try{
+      const atual=await gh("dados.json");
+      if(atual.sha!==sha&&!confirm("O site foi alterado em outro lugar desde que você abriu o painel. Publicar agora vai substituir essas mudanças. Continuar?")){bt.disabled=false;aviso("Publicação cancelada.","in");return}
+      for(const [path,url] of Object.entries(fotos)){
+        if(!D.produtos.some(p=>p.foto===path))continue;
+        await gh(path,{method:"PUT",body:JSON.stringify({message:"Nova foto de produto",content:url.split(",")[1]})});
+      }
+      const r=await gh("dados.json",{method:"PUT",body:JSON.stringify({message:"Atualização pelo painel",content:enc(JSON.stringify(D,null,1)),sha:atual.sha})});
+      sha=r.content.sha;sujo=false;
+      Object.keys(fotos).forEach(k=>{});barra();aviso("Publicado! O site atualiza em 1 a 2 minutos.","ok",8000);
+    }catch(e){bt.disabled=false;aviso(erroTxt(e),"er",9000)}
+  }
+};
+document.addEventListener("click",e=>{const b=e.target.closest("[data-a]");if(b&&acao[b.dataset.a])acao[b.dataset.a](b)});
+document.addEventListener("input",e=>{
+  const t=e.target;
+  if(t.id==="busca"){busca=t.value;$("#lista").innerHTML=lista()}
+  else if(t.dataset.loja){D.loja[t.dataset.loja]=t.dataset.loja==="whatsapp"?t.value.replace(/\D/g,""):t.value;marcar()}
+  else if(t.dataset.fi!==undefined){
+    const f=D.frete[+t.dataset.fi];
+    if(t.dataset.k==="local")f.local=limpa(t.value);
+    else if(t.dataset.k==="valor"){const v=num(t.value);f.valor=isNaN(v)?0:v}
+    else{f.valor=t.checked?null:0;marcar();tela();return}
+    marcar();
+  }
+});
+document.addEventListener("change",async e=>{
+  if(e.target.id!=="arq"||!e.target.files[0])return;
+  try{
+    const url=await reduz(e.target.files[0]),nome=$("#f-nome").value||"produto",path=`fotos/${slug(nome)}-${Date.now().toString(36)}.jpg`;
+    fotos[path]=url;const p=lerForm();edFoto=path;p.foto=path;ed.p=p;tela();
+  }catch(err){aviso("Não consegui abrir essa foto. Tente outra imagem.","er")}
+});
+addEventListener("beforeunload",e=>{if(sujo){e.preventDefault();e.returnValue=""}});
+
+/* ---------- início ---------- */
+(async()=>{
+  if(cfg.repo&&cfg.token){try{await carregar()}catch(e){aviso(erroTxt(e),"er",9000)}}
+  tela();
+})();
+</script>
+</body>
+</html>
