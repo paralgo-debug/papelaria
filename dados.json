@@ -11,20 +11,20 @@
  },
  "frete": [
   {
-   "local": "Lugar X",
+   "local": "Bairro X",
    "valor": 5
   },
   {
-   "local": "Lugar Y",
+   "local": "Bairro Y",
    "valor": 10
   },
   {
-   "local": "Lugar Z",
+   "local": "Bairro Z",
    "valor": 15
   },
   {
-   "local": "Lugar J",
-   "valor": null
+   "local": "Bairro k",
+   "valor": 18
   }
  ],
  "produtos": [
@@ -663,6 +663,18 @@
    "detalhes": "100 Envelope Colorido\nIdeal para Convite de Casamento, Bodas, Formatura, Aniversário e eventos diversos.\nTamanho: 114mm x 162mm\nGramatura: 80 g/m²\nO tom das cores pode alterar conforme a resolução da tela\nSelecione a cor desejada.\nNa opção sortido, as cores são enviadas aleatoriamente.",
    "ativo": true,
    "destaque": false
+  },
+  {
+   "nome": "Caderno verde",
+   "preco": 25.99,
+   "estoque": 3,
+   "categoria": "Caderno e Fichário",
+   "foto": "",
+   "emoji": "📒",
+   "descricao": "Teste",
+   "detalhes": "Testando",
+   "ativo": true,
+   "destaque": true
   }
  ]
 }
