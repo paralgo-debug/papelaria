@@ -129,7 +129,8 @@ function corpo(){
     <label>Horário de funcionamento<small>Uma linha para cada horário</small></label><textarea data-loja="horarios">${h(D.loja.horarios)}</textarea></div>`;
   }
   return `<h2>Como usar</h2><div class="card"><ol class="passos">
-    <li><b>Produtos:</b> toque em um produto para mudar preço, estoque, foto ou descrição. Use <b>+ Novo</b> para cadastrar.</li>
+    <li><b>Produtos:</b> toque em um produto para mudar preço, estoque, foto ou descrição. Use <b>+ Novo</b> para cadastrar. A categoria é escolhida em um menu.</li>
+    <li><b>Promoções:</b> ao editar um produto, marque <b>Este produto está em promoção</b>, informe o preço antigo (riscado) e, se quiser, até quando vale. No site aparece o preço cortado e o novo.</li>
     <li><b>Entrega:</b> defina os locais atendidos e o valor do frete.</li>
     <li><b>Loja:</b> altere WhatsApp, telefone, endereço, horários e redes sociais.</li>
     <li>Quando terminar, toque em <b>Publicar</b> (barra de baixo). O site atualiza em 1 a 2 minutos.</li>
@@ -147,17 +148,32 @@ const lista=()=>{
   const q=busca.toLowerCase();
   const it=D.produtos.map((p,i)=>[p,i]).filter(x=>x[0].nome.toLowerCase().includes(q)).map(([p,i])=>
     `<button class="item" data-a="edit" data-i="${i}"><span class="t">${imgSrc(p.foto)?`<img src="${h(imgSrc(p.foto))}" alt="">`:h(p.emoji||"🛍️")}</span>
-    <span class="nm">${h(p.nome)}<small>${R(p.preco)} · ${p.estoque===null||p.estoque===undefined?"sem controle de estoque":"estoque: "+p.estoque}${p.ativo===false?" · OCULTO":""}${p.destaque?" · ⭐ destaque":""}</small></span><span aria-hidden="true">›</span></button>`).join("");
+    <span class="nm">${h(p.nome)}<small>${R(p.preco)}${p.precoDe>p.preco?" · 🏷 promo":""} · ${p.estoque===null||p.estoque===undefined?"sem controle de estoque":"estoque: "+p.estoque}${p.ativo===false?" · OCULTO":""}${p.destaque?" · ⭐ destaque":""}</small></span><span aria-hidden="true">›</span></button>`).join("");
   return it||'<p class="vazio">Nenhum produto encontrado.</p>';
 };
 const imgSrc=f=>f?(fotos[f]||(/^https?:/.test(f)?"":f)):"";
 function formProduto(){
-  const p=ed.p, cats=[...new Set(D.produtos.map(x=>x.categoria).filter(Boolean))];
+  const p=ed.p, cats=[...new Set(D.produtos.map(x=>x.categoria).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"pt-BR"));
+  const catAtual=p.categoria||"";
+  const catNaLista=cats.includes(catAtual);
+  const temPromo=!!(p.precoDe!=null&&p.precoDe!==""&&Number(p.precoDe)>0);
   return `<h2>${ed.i<0?"Novo produto":"Editar produto"}</h2><div class="card">
   <label>Nome do produto *</label><input id="f-nome" value="${h(p.nome)}">
-  <label>Preço (R$) *</label><input id="f-preco" inputmode="decimal" placeholder="Exemplo: 24,90" value="${p.preco===""?"":String(p.preco).replace(".",",")}">
+  <label>Preço atual (R$) *</label><input id="f-preco" inputmode="decimal" placeholder="Exemplo: 24,90" value="${p.preco===""||p.preco==null?"":String(p.preco).replace(".",",")}">
+  <label class="chk"><input type="checkbox" id="f-promo" ${temPromo?"checked":""}> Este produto está em promoção</label>
+  <div id="promo-box" style="${temPromo?"":"display:none"}">
+    <label>Preço antigo (riscado) *<small>O valor que aparece cortado no site</small></label>
+    <input id="f-precoDe" inputmode="decimal" placeholder="Exemplo: 39,90" value="${p.precoDe==null||p.precoDe===""?"":String(p.precoDe).replace(".",",")}">
+    <label>Promoção válida até<small>Opcional. Depois desta data a promoção some sozinha</small></label>
+    <input id="f-promoFim" type="date" value="${h(p.promoFim||"")}">
+  </div>
   <label>Estoque<small>Deixe vazio se não quiser controlar. Com 0 aparece "Esgotado" no site.</small></label><input id="f-est" inputmode="numeric" value="${p.estoque===null||p.estoque===undefined?"":p.estoque}">
-  <label>Categoria<small>Escolha uma existente ou digite uma nova</small></label><input id="f-cat" list="cats" value="${h(p.categoria)}"><datalist id="cats">${cats.map(c=>`<option value="${h(c)}">`).join("")}</datalist>
+  <label>Categoria *<small>Escolha uma categoria existente ou "Nova categoria…"</small></label>
+  <select id="f-cat">${cats.map(c=>`<option value="${h(c)}" ${c===catAtual?"selected":""}>${h(c)}</option>`).join("")}<option value="__nova__" ${!catNaLista&&catAtual?"selected":""}>Nova categoria…</option>${cats.length?"":'<option value="Outros">Outros</option>'}</select>
+  <div id="cat-nova" style="${!catNaLista&&catAtual?"":"display:none"}">
+    <label>Nome da nova categoria</label>
+    <input id="f-cat-nova" value="${!catNaLista?h(catAtual):""}" placeholder="Ex.: Cadernos">
+  </div>
   <label>Foto do produto</label><div class="prev" id="prev">${imgSrc(edFoto)?`<img src="${h(imgSrc(edFoto))}" alt="Foto do produto">`:h(p.emoji||"🛍️")}</div>
   <div class="linha" style="margin-top:6px"><button class="b" data-a="foto">📷 Escolher foto da galeria</button>${edFoto?'<button class="b d" data-a="semfoto">Remover foto</button>':""}</div>
   <input id="arq" type="file" accept="image/*" hidden>
@@ -176,9 +192,17 @@ async function reduz(file){
   const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.drawImage(bmp,0,0,c.width,c.height);
   return c.toDataURL("image/jpeg",.82);
 }
-const lerForm=()=>({nome:limpa($("#f-nome").value),preco:num($("#f-preco").value),estoque:$("#f-est").value.trim()===""?null:Math.max(parseInt($("#f-est").value,10)||0,0),
-  categoria:limpa($("#f-cat").value)||"Outros",foto:edFoto,emoji:limpa($("#f-emo").value)||"🛍️",descricao:limpa($("#f-desc").value),detalhes:limpa($("#f-det").value),
-  ativo:$("#f-ativo").checked,destaque:$("#f-dest").checked});
+const lerForm=()=>{
+  const catSel=$("#f-cat").value;
+  const categoria=catSel==="__nova__"? (limpa($("#f-cat-nova").value)||"Outros") : (limpa(catSel)||"Outros");
+  const emPromo=$("#f-promo")&&$("#f-promo").checked;
+  const precoDe=emPromo?num($("#f-precoDe").value):null;
+  const promoFim=emPromo?($("#f-promoFim").value||null):null;
+  return {nome:limpa($("#f-nome").value),preco:num($("#f-preco").value),precoDe:(precoDe>0?precoDe:null),promoFim,
+    estoque:$("#f-est").value.trim()===""?null:Math.max(parseInt($("#f-est").value,10)||0,0),
+    categoria,foto:edFoto,emoji:limpa($("#f-emo").value)||"🛍️",descricao:limpa($("#f-desc").value),detalhes:limpa($("#f-det").value),
+    ativo:$("#f-ativo").checked,destaque:$("#f-dest").checked};
+};
 const acao={
   async conectar(){
     cfg={repo:$("#repo").value.trim().replace(/^https?:\/\/github\.com\//,"").replace(/\/+$/,""),token:$("#tok").value.trim()};
@@ -187,7 +211,7 @@ const acao={
   },
   sair(){if(sujo&&!confirm("Há mudanças não publicadas. Sair mesmo assim?"))return;cfg.token="";guardar();D=null;sujo=false;fotos={};ed=null;tela()},
   aba(b){if(ed&&!confirm("Descartar a edição deste produto?"))return;ed=null;aba=b.dataset.v;tela()},
-  novo(){ed={i:-1,p:{nome:"",preco:"",estoque:null,categoria:"",foto:"",emoji:"🛍️",descricao:"",detalhes:"",ativo:true,destaque:false}};edFoto="";tela();scrollTo(0,0)},
+  novo(){ed={i:-1,p:{nome:"",preco:"",precoDe:null,promoFim:"",estoque:null,categoria:"",foto:"",emoji:"🛍️",descricao:"",detalhes:"",ativo:true,destaque:false}};edFoto="";tela();scrollTo(0,0)},
   edit(b){const i=+b.dataset.i;ed={i,p:{...D.produtos[i]}};edFoto=D.produtos[i].foto||"";tela();scrollTo(0,0)},
   cancelar(){ed=null;tela()},
   foto(){$("#arq").click()},
@@ -196,6 +220,10 @@ const acao={
     const p=lerForm();
     if(!p.nome){aviso("Digite o nome do produto.","er");return $("#f-nome").focus()}
     if(!(p.preco>=0)||isNaN(p.preco)){aviso("Digite um preço válido, como 24,90.","er");return $("#f-preco").focus()}
+    if($("#f-promo")&&$("#f-promo").checked){
+      if(!(p.precoDe>p.preco)){aviso("O preço antigo precisa ser maior que o preço atual da promoção.","er");return $("#f-precoDe").focus()}
+    }
+    if($("#f-cat").value==="__nova__"&&!limpa($("#f-cat-nova").value)){aviso("Digite o nome da nova categoria.","er");return $("#f-cat-nova").focus()}
     if(ed.i<0)D.produtos.push(p);else D.produtos[ed.i]=p;
     ed=null;marcar();tela();aviso("Produto salvo. Toque em Publicar para colocar no site.","ok");
   },
@@ -228,6 +256,15 @@ document.addEventListener("input",e=>{
     else if(t.dataset.k==="valor"){const v=num(t.value);f.valor=isNaN(v)?0:v}
     else{f.valor=t.checked?null:0;marcar();tela();return}
     marcar();
+  }
+});
+document.addEventListener("change",e=>{
+  const t=e.target;
+  if(t.id==="f-promo"){
+    const box=$("#promo-box"); if(box) box.style.display=t.checked?"":"none";
+  }
+  if(t.id==="f-cat"){
+    const n=$("#cat-nova"); if(n) n.style.display=t.value==="__nova__"?"":"none";
   }
 });
 document.addEventListener("change",async e=>{
