@@ -722,6 +722,26 @@
    "ativo": true,
    "destaque": false,
    "codigo": "100-envelopes-coloridos-para-carta-e-con"
+  },
+  {
+   "nome": "Caderno verde",
+   "preco": 20,
+   "precoDe": 26.99,
+   "promoFim": "2026-10-09",
+   "estoque": null,
+   "categoria": "Caderno e Fichário",
+   "foto": "fotos/caderno-verde-muybfoc00.jpg",
+   "fotos": [
+    "fotos/caderno-verde-muybfoc00.jpg",
+    "fotos/caderno-verde-muybgik20.jpg",
+    "fotos/caderno-verde-muybgthv0.jpg"
+   ],
+   "emoji": "🛍️",
+   "descricao": "Caderno verde",
+   "detalhes": "Caderno verde 100 folhas",
+   "ativo": true,
+   "destaque": true,
+   "codigo": "caderno-verde"
   }
  ]
 }
