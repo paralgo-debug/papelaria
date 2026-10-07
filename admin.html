@@ -35,6 +35,16 @@ textarea{min-height:90px;resize:vertical}
 .item .t img{width:100%;height:100%;object-fit:cover}
 .item .nm{flex:1;font-weight:700;min-width:0}.item small{display:block;font-weight:400;color:var(--mu)}
 .vazio{color:var(--mu);text-align:center;padding:24px}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:10px;margin:6px 0 10px}
+.fi{border:1.5px solid var(--ln);border-radius:12px;padding:6px;background:#fff;display:flex;flex-direction:column;gap:6px}
+.fi.pr{border-color:var(--az);box-shadow:0 0 0 2px #b9d0ff}
+.fi .im{position:relative;aspect-ratio:1/1;border-radius:8px;overflow:hidden;background:#e4eaf7}
+.fi .im img{width:100%;height:100%;object-fit:cover;display:block}
+.fi .tag{position:absolute;left:4px;top:4px;background:var(--az);color:#fff;font-size:.7rem;font-weight:700;border-radius:6px;padding:1px 6px}
+.fi .bt{display:flex;gap:4px}
+.fi .bt button{flex:1;min-height:38px;border:0;border-radius:8px;background:#e4eaf7;color:var(--tx);font:700 1rem inherit;cursor:pointer;padding:0}
+.fi .bt button:disabled{opacity:.35}
+.fi .bt button.x{background:#fde4e4;color:var(--er)}
 .prev{width:150px;height:150px;border-radius:12px;background:#e4eaf7;display:grid;place-items:center;font-size:3rem;overflow:hidden;margin:6px 0}
 .prev img{width:100%;height:100%;object-fit:cover}
 .loc{display:grid;grid-template-columns:1fr 110px 40px;gap:8px;align-items:center;margin-bottom:8px}
@@ -46,6 +56,11 @@ textarea{min-height:90px;resize:vertical}
 #aviso.ok{background:var(--ok);display:block}#aviso.er{background:var(--er);display:block}#aviso.in{background:var(--tx);display:block}
 .conectar{max-width:520px;margin:0 auto;padding:calc(env(safe-area-inset-top,0px) + 24px) 16px}
 details{margin-top:12px}summary{cursor:pointer;font-weight:700;color:var(--az)}
+
+.item{padding:0;overflow:hidden}
+.ibtn{display:flex;align-items:center;gap:12px;flex:1;min-width:0;text-align:left;background:none;border:0;padding:10px;font:inherit;color:inherit;cursor:pointer}
+.est-b{display:flex;gap:6px;padding-right:10px}
+.est-b button{width:42px;height:42px;border-radius:10px;border:1px solid var(--ln);background:#fff;font:700 .95rem inherit;cursor:pointer}
 </style>
 </head>
 <body>
@@ -63,7 +78,7 @@ const enc=s=>btoa(unescape(encodeURIComponent(s)));
 const dec=s=>decodeURIComponent(escape(atob(s.replace(/\s/g,""))));
 const slug=t=>t.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,30)||"produto";
 
-let cfg={},D=null,sha="",sujo=false,fotos={},aba="prod",ed=null,busca="",edFoto="";
+let cfg={},D=null,sha="",sujo=false,fotos={},aba="prod",ed=null,busca="",edFotos=[],enviadas=new Set();
 try{cfg=JSON.parse(localStorage.getItem("painel")||"{}")}catch(e){}
 const guardar=()=>{try{localStorage.setItem("painel",JSON.stringify(cfg))}catch(e){}};
 
@@ -85,6 +100,47 @@ function aviso(t,tipo="in",ms=5000){const a=$("#aviso");a.textContent=t;a.classN
 async function carregar(){
   const j=await gh("dados.json"); sha=j.sha; D=JSON.parse(dec(j.content));
   D.produtos=D.produtos||[]; D.frete=D.frete||[]; D.loja=D.loja||{};
+  if(garantirCodigos())sujo=true;   // produtos antigos recebem um código fixo
+  restaurarRascunho();
+}
+
+/* ---------- códigos fixos, rascunho e validação ---------- */
+const codUnico=(nome,usados)=>{let b=slug(nome)||"produto",c=b,i=2;while(usados.has(c))c=b+"-"+i++;return c};
+function garantirCodigos(){
+  const u=new Set(D.produtos.map(p=>p.codigo).filter(Boolean));let mud=false;
+  D.produtos.forEach(p=>{if(!p.codigo){p.codigo=codUnico(p.nome,u);u.add(p.codigo);mud=true}});
+  return mud;
+}
+const kRasc=()=>"rascunho:"+cfg.repo;
+let tRasc;
+function salvarRascunho(){
+  clearTimeout(tRasc);
+  tRasc=setTimeout(()=>{try{localStorage.setItem(kRasc(),JSON.stringify({D,em:Date.now(),
+    fotos:Object.fromEntries(Object.entries(fotos).filter(([p])=>!enviadas.has(p)&&D.produtos.some(x=>fotosDe(x).includes(p))))}))}catch(e){}},600);
+}
+const limparRascunho=()=>{try{localStorage.removeItem(kRasc())}catch(e){}};
+function restaurarRascunho(){
+  try{
+    const r=JSON.parse(localStorage.getItem(kRasc())||"null");if(!r||!r.D)return;
+    if(JSON.stringify(r.D)===JSON.stringify(D)){limparRascunho();return}
+    if(confirm("Encontrei mudanças que você não publicou, salvas neste aparelho em "+new Date(r.em).toLocaleString("pt-BR")+".\n\nContinuar de onde parou?\n(OK = continuar · Cancelar = descartar)")){
+      D=r.D;D.produtos=D.produtos||[];D.frete=D.frete||[];D.loja=D.loja||{};fotos=r.fotos||{};sujo=true;
+    }else limparRascunho();
+  }catch(e){}
+}
+function validar(){
+  const e=[],cods=new Set();
+  D.produtos.forEach((p,i)=>{
+    const n=`"${p.nome||"produto "+(i+1)}"`;
+    if(!p.nome)e.push("produto "+(i+1)+" está sem nome");
+    if(p.preco===""||p.preco===null||!(Number(p.preco)>=0))e.push(n+": preço inválido");
+    if(!p.categoria)e.push(n+": falta a categoria");
+    if(p.precoDe!=null&&p.precoDe!==""&&!(Number(p.precoDe)>Number(p.preco)))e.push(n+": o preço antigo precisa ser maior que o atual");
+    if(cods.has(p.codigo))e.push(n+": código repetido");cods.add(p.codigo);
+  });
+  D.frete.forEach(f=>{if(!f.local)e.push("há um local de entrega sem nome");if(f.valor!==null&&f.valor!==undefined&&isNaN(Number(f.valor)))e.push(`frete de "${f.local}" inválido`)});
+  if(String(D.loja.whatsapp||"").replace(/\D/g,"").length<12)e.push("WhatsApp da loja incompleto (use 55 + DDD + número)");
+  return e;
 }
 
 /* ---------- telas ---------- */
@@ -114,27 +170,33 @@ function barra(){
   b.className=sujo?"sujo":"";
   b.innerHTML=sujo?`<span>● Há mudanças que ainda não estão no site</span><button class="b p" data-a="publicar">Publicar</button>`:`<span>✔ Tudo publicado</span><a href="./" target="_blank" style="color:var(--az)">Ver o site</a>`;
 }
-function marcar(){sujo=true;barra()}
+function marcar(){sujo=true;barra();salvarRascunho()}
 function corpo(){
   if(aba==="prod") return ed?formProduto():`<h2>Produtos</h2><div class="top"><input id="busca" placeholder="Buscar produto…" value="${h(busca)}" aria-label="Buscar produto"><button class="b p" data-a="novo">+ Novo</button></div><div id="lista">${lista()}</div>`;
   if(aba==="ent") return `<h2>Entrega</h2><div class="card"><p style="margin-top:0">Os locais e valores de frete que o cliente escolhe no pedido. Marque <b>Não entregamos</b> para avisar que não atende o local.</p>
     ${D.frete.map((f,i)=>`<div class="loc"><input data-fi="${i}" data-k="local" value="${h(f.local)}" aria-label="Nome do local" placeholder="Nome do local">
     <input data-fi="${i}" data-k="valor" inputmode="decimal" value="${f.valor===null?"":String(f.valor).replace(".",",")}" ${f.valor===null?"disabled":""} aria-label="Valor do frete" placeholder="R$ 0,00">
     <button class="b d" data-a="dellocal" data-i="${i}" aria-label="Remover local">✕</button>
-    <label class="nao"><input type="checkbox" data-fi="${i}" data-k="nao" ${f.valor===null?"checked":""}> Não entregamos neste local</label></div>`).join("")}
+    <label class="nao"><input type="checkbox" data-fi="${i}" data-k="nao" ${f.valor===null?"checked":""}> Não entregamos neste local</label>
+    <label class="nao"><input type="checkbox" data-fi="${i}" data-k="ret" ${f.retirada?"checked":""}> Retirada na loja (não pede endereço)</label></div>`).join("")}
     <button class="b" data-a="addlocal">+ Adicionar local</button></div>`;
   if(aba==="loja"){
-    const c=[["nome","Nome da loja"],["whatsapp","WhatsApp dos pedidos","Só números, com 55 e DDD. Exemplo: 5527999999999"],["telefone","Telefone"],["email","E-mail"],["endereco","Endereço da loja"],["instagram","Link do Instagram","Cole o endereço completo do perfil"],["facebook","Link do Facebook","Cole o endereço completo da página"]];
+    const c=[["nome","Nome da loja"],["whatsapp","WhatsApp dos pedidos","Só números, com 55 e DDD. Exemplo: 5527999999999"],["telefone","Telefone"],["email","E-mail"],["endereco","Endereço da loja"],["instagram","Link do Instagram","Cole o endereço completo do perfil"],["facebook","Link do Facebook","Cole o endereço completo da página"],["sobreTitulo","Título da seção \"Sobre\"","Deixe vazio para manter o texto atual"],["rodape","Texto do rodapé","Deixe vazio para manter o texto atual"]];
     return `<h2>Dados da loja</h2><div class="card">${c.map(x=>`<label>${x[1]}${x[2]?`<small>${x[2]}</small>`:""}</label><input data-loja="${x[0]}" value="${h(D.loja[x[0]])}" ${x[0]==="whatsapp"?'inputmode="numeric"':""}>`).join("")}
-    <label>Horário de funcionamento<small>Uma linha para cada horário</small></label><textarea data-loja="horarios">${h(D.loja.horarios)}</textarea></div>`;
+    <label>Horário de funcionamento<small>Uma linha para cada horário</small></label><textarea data-loja="horarios">${h(D.loja.horarios)}</textarea>
+    <label>Texto da seção "Sobre"<small>Um parágrafo por linha. Deixe vazio para manter o texto atual.</small></label><textarea data-loja="sobreTexto">${h(D.loja.sobreTexto)}</textarea>
+    <label>Formas de pagamento<small>Uma por linha. O cliente escolhe uma no pedido.</small></label><textarea data-loja="pagamentos">${h(D.loja.pagamentos||"Pix\nDinheiro\nCartão (maquininha na entrega)")}</textarea></div>`;
   }
   return `<h2>Como usar</h2><div class="card"><ol class="passos">
-    <li><b>Produtos:</b> toque em um produto para mudar preço, estoque, foto ou descrição. Use <b>+ Novo</b> para cadastrar. A categoria é escolhida em um menu.</li>
+    <li><b>Produtos:</b> toque em um produto para mudar preço, estoque, fotos ou descrição. Você pode adicionar várias fotos; a primeira é a principal e as setas ◀ ▶ mudam a ordem. Use <b>+ Novo</b> para cadastrar. A categoria é escolhida em um menu.</li>
     <li><b>Promoções:</b> ao editar um produto, marque <b>Este produto está em promoção</b>, informe o preço antigo (riscado) e, se quiser, até quando vale. No site aparece o preço cortado e o novo.</li>
     <li><b>Entrega:</b> defina os locais atendidos e o valor do frete.</li>
     <li><b>Loja:</b> altere WhatsApp, telefone, endereço, horários e redes sociais.</li>
     <li>Quando terminar, toque em <b>Publicar</b> (barra de baixo). O site atualiza em 1 a 2 minutos.</li>
-    <li>O estoque <b>não diminui sozinho</b> quando alguém faz um pedido. Atualize aqui depois de cada venda.</li></ol></div>
+    <li>O estoque <b>não diminui sozinho</b> quando alguém faz um pedido. Na lista de produtos use os botões <b>−1</b> e <b>+1</b> depois de cada venda.</li>
+    <li>Se a página fechar antes de publicar, o painel guarda um <b>rascunho</b> neste aparelho e oferece continuar na próxima vez.</li>
+    <li>Antes de publicar, o painel confere se está tudo certo (nome, preço, categoria, WhatsApp) e avisa o que corrigir.</li></ol></div>
+    <div class="card"><b>Manutenção</b><p>Apaga do repositório as fotos que não estão mais em nenhum produto (de produtos excluídos ou fotos trocadas).</p><button class="b" data-a="limpar">🧹 Limpar fotos não usadas</button></div>
     <div class="card"><b>Criar uma nova chave de acesso</b><ol class="passos">${ajudaChave()}</ol></div>`;
 }
 const ajudaChave=()=>`<li>Entre em <b>github.com</b> com a conta dona do site.</li>
@@ -147,10 +209,12 @@ const ajudaChave=()=>`<li>Entre em <b>github.com</b> com a conta dona do site.</
 const lista=()=>{
   const q=busca.toLowerCase();
   const it=D.produtos.map((p,i)=>[p,i]).filter(x=>x[0].nome.toLowerCase().includes(q)).map(([p,i])=>
-    `<button class="item" data-a="edit" data-i="${i}"><span class="t">${imgSrc(p.foto)?`<img src="${h(imgSrc(p.foto))}" alt="">`:h(p.emoji||"🛍️")}</span>
-    <span class="nm">${h(p.nome)}<small>${R(p.preco)}${p.precoDe>p.preco?" · 🏷 promo":""} · ${p.estoque===null||p.estoque===undefined?"sem controle de estoque":"estoque: "+p.estoque}${p.ativo===false?" · OCULTO":""}${p.destaque?" · ⭐ destaque":""}</small></span><span aria-hidden="true">›</span></button>`).join("");
+    `<div class="item"><button class="ibtn" data-a="edit" data-i="${i}"><span class="t">${imgSrc(fotosDe(p)[0])?`<img src="${h(imgSrc(fotosDe(p)[0]))}" alt="">`:h(p.emoji||"🛍️")}</span>
+    <span class="nm">${h(p.nome)}<small>${R(p.preco)}${p.precoDe>p.preco?" · 🏷 promo":""} · ${p.estoque===null||p.estoque===undefined?"sem controle de estoque":"estoque: "+p.estoque}${fotosDe(p).length>1?" · 📷 "+fotosDe(p).length+" fotos":""}${p.ativo===false?" · OCULTO":""}${p.destaque?" · ⭐ destaque":""}</small></span><span aria-hidden="true">›</span></button>${p.estoque!=null?`<span class="est-b"><button data-a="est" data-i="${i}" data-d="-1" aria-label="Diminuir estoque de ${h(p.nome)}">−1</button><button data-a="est" data-i="${i}" data-d="1" aria-label="Aumentar estoque de ${h(p.nome)}">+1</button></span>`:""}</div>`).join("");
   return it||'<p class="vazio">Nenhum produto encontrado.</p>';
 };
+const fotosDe=p=>Array.isArray(p.fotos)&&p.fotos.length?p.fotos.filter(Boolean):(p.foto?[p.foto]:[]);
+const MAXF=8;
 const imgSrc=f=>f?(fotos[f]||(/^https?:/.test(f)?"":f)):"";
 function formProduto(){
   const p=ed.p, cats=[...new Set(D.produtos.map(x=>x.categoria).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"pt-BR"));
@@ -169,14 +233,16 @@ function formProduto(){
   </div>
   <label>Estoque<small>Deixe vazio se não quiser controlar. Com 0 aparece "Esgotado" no site.</small></label><input id="f-est" inputmode="numeric" value="${p.estoque===null||p.estoque===undefined?"":p.estoque}">
   <label>Categoria *<small>Escolha uma categoria existente ou "Nova categoria…"</small></label>
-  <select id="f-cat">${cats.map(c=>`<option value="${h(c)}" ${c===catAtual?"selected":""}>${h(c)}</option>`).join("")}<option value="__nova__" ${!catNaLista&&catAtual?"selected":""}>Nova categoria…</option>${cats.length?"":'<option value="Outros">Outros</option>'}</select>
+  <select id="f-cat"><option value=""${catAtual?"":" selected"}>Selecione a categoria…</option>${cats.map(c=>`<option value="${h(c)}" ${c===catAtual?"selected":""}>${h(c)}</option>`).join("")}<option value="__nova__" ${!catNaLista&&catAtual?"selected":""}>Nova categoria…</option>${cats.length?"":'<option value="Outros">Outros</option>'}</select>
   <div id="cat-nova" style="${!catNaLista&&catAtual?"":"display:none"}">
     <label>Nome da nova categoria</label>
     <input id="f-cat-nova" value="${!catNaLista?h(catAtual):""}" placeholder="Ex.: Cadernos">
   </div>
-  <label>Foto do produto</label><div class="prev" id="prev">${imgSrc(edFoto)?`<img src="${h(imgSrc(edFoto))}" alt="Foto do produto">`:h(p.emoji||"🛍️")}</div>
-  <div class="linha" style="margin-top:6px"><button class="b" data-a="foto">📷 Escolher foto da galeria</button>${edFoto?'<button class="b d" data-a="semfoto">Remover foto</button>':""}</div>
-  <input id="arq" type="file" accept="image/*" hidden>
+  <label>Fotos do produto<small>Até ${MAXF} fotos. A primeira é a principal (aparece na vitrine). Use ◀ ▶ para mudar a ordem.</small></label>
+  ${edFotos.length?`<div class="fgrid">${edFotos.map((f,i)=>`<div class="fi${i===0?" pr":""}"><div class="im">${imgSrc(f)?`<img src="${h(imgSrc(f))}" alt="Foto ${i+1}">`:h(p.emoji||"🛍️")}${i===0?'<span class="tag">Principal</span>':""}</div>
+    <div class="bt"><button type="button" data-a="fmover" data-i="${i}" data-d="-1" ${i===0?"disabled":""} aria-label="Mover foto ${i+1} para antes">◀</button><button type="button" data-a="fmover" data-i="${i}" data-d="1" ${i===edFotos.length-1?"disabled":""} aria-label="Mover foto ${i+1} para depois">▶</button><button type="button" class="x" data-a="fdel" data-i="${i}" aria-label="Remover foto ${i+1}">✕</button></div></div>`).join("")}</div>`:`<div class="prev" id="prev">${h(p.emoji||"🛍️")}</div>`}
+  <div class="linha" style="margin-top:6px"><button class="b" data-a="foto" ${edFotos.length>=MAXF?"disabled":""}>📷 Adicionar fotos da galeria</button></div>
+  <input id="arq" type="file" accept="image/*" multiple hidden>
   <label>Emoji<small>Aparece quando o produto não tem foto</small></label><input id="f-emo" value="${h(p.emoji)}" style="max-width:100px">
   <label>Descrição curta</label><input id="f-desc" value="${h(p.descricao)}">
   <label>Descrição completa<small>Aparece na página do produto</small></label><textarea id="f-det">${h(p.detalhes)}</textarea>
@@ -194,13 +260,13 @@ async function reduz(file){
 }
 const lerForm=()=>{
   const catSel=$("#f-cat").value;
-  const categoria=catSel==="__nova__"? (limpa($("#f-cat-nova").value)||"Outros") : (limpa(catSel)||"Outros");
+  const categoria=catSel==="__nova__"? limpa($("#f-cat-nova").value) : limpa(catSel);
   const emPromo=$("#f-promo")&&$("#f-promo").checked;
   const precoDe=emPromo?num($("#f-precoDe").value):null;
   const promoFim=emPromo?($("#f-promoFim").value||null):null;
   return {nome:limpa($("#f-nome").value),preco:num($("#f-preco").value),precoDe:(precoDe>0?precoDe:null),promoFim,
     estoque:$("#f-est").value.trim()===""?null:Math.max(parseInt($("#f-est").value,10)||0,0),
-    categoria,foto:edFoto,emoji:limpa($("#f-emo").value)||"🛍️",descricao:limpa($("#f-desc").value),detalhes:limpa($("#f-det").value),
+    categoria,foto:edFotos[0]||"",fotos:[...edFotos],emoji:limpa($("#f-emo").value)||"🛍️",descricao:limpa($("#f-desc").value),detalhes:limpa($("#f-det").value),
     ativo:$("#f-ativo").checked,destaque:$("#f-dest").checked};
 };
 const acao={
@@ -209,13 +275,14 @@ const acao={
     aviso("Conectando…","in",0);
     try{await carregar();guardar();aviso("Conectado!","ok");tela()}catch(e){aviso(erroTxt(e),"er",9000)}
   },
-  sair(){if(sujo&&!confirm("Há mudanças não publicadas. Sair mesmo assim?"))return;cfg.token="";guardar();D=null;sujo=false;fotos={};ed=null;tela()},
+  sair(){if(sujo&&!confirm("Há mudanças não publicadas. Sair mesmo assim?"))return;cfg.token="";guardar();D=null;sujo=false;fotos={};enviadas=new Set();ed=null;tela()},
   aba(b){if(ed&&!confirm("Descartar a edição deste produto?"))return;ed=null;aba=b.dataset.v;tela()},
-  novo(){ed={i:-1,p:{nome:"",preco:"",precoDe:null,promoFim:"",estoque:null,categoria:"",foto:"",emoji:"🛍️",descricao:"",detalhes:"",ativo:true,destaque:false}};edFoto="";tela();scrollTo(0,0)},
-  edit(b){const i=+b.dataset.i;ed={i,p:{...D.produtos[i]}};edFoto=D.produtos[i].foto||"";tela();scrollTo(0,0)},
+  novo(){ed={i:-1,p:{nome:"",preco:"",precoDe:null,promoFim:"",estoque:null,categoria:"",foto:"",fotos:[],emoji:"🛍️",descricao:"",detalhes:"",ativo:true,destaque:false}};edFotos=[];tela();scrollTo(0,0)},
+  edit(b){const i=+b.dataset.i;ed={i,p:{...D.produtos[i]}};edFotos=[...fotosDe(D.produtos[i])];tela();scrollTo(0,0)},
   cancelar(){ed=null;tela()},
   foto(){$("#arq").click()},
-  semfoto(){edFoto="";const p=lerForm();ed.p=p;tela()},
+  fdel(b){ed.p=lerForm();edFotos.splice(+b.dataset.i,1);ed.p=lerForm();tela()},
+  fmover(b){const i=+b.dataset.i,j=i+ +b.dataset.d;if(j<0||j>=edFotos.length)return;ed.p=lerForm();[edFotos[i],edFotos[j]]=[edFotos[j],edFotos[i]];ed.p=lerForm();tela()},
   salvarprod(){
     const p=lerForm();
     if(!p.nome){aviso("Digite o nome do produto.","er");return $("#f-nome").focus()}
@@ -224,24 +291,43 @@ const acao={
       if(!(p.precoDe>p.preco)){aviso("O preço antigo precisa ser maior que o preço atual da promoção.","er");return $("#f-precoDe").focus()}
     }
     if($("#f-cat").value==="__nova__"&&!limpa($("#f-cat-nova").value)){aviso("Digite o nome da nova categoria.","er");return $("#f-cat-nova").focus()}
+    if(!p.categoria){aviso("Escolha a categoria do produto.","er");return $("#f-cat").focus()}
+    p.codigo=(ed.i>=0&&D.produtos[ed.i].codigo)||codUnico(p.nome,new Set(D.produtos.map(x=>x.codigo)));
     if(ed.i<0)D.produtos.push(p);else D.produtos[ed.i]=p;
     ed=null;marcar();tela();aviso("Produto salvo. Toque em Publicar para colocar no site.","ok");
   },
   excluir(){if(!confirm("Excluir este produto? Para só esconder do site, use \"Mostrar este produto no site\"."))return;D.produtos.splice(ed.i,1);ed=null;marcar();tela()},
+  est(b){const p=D.produtos[+b.dataset.i];p.estoque=Math.max(0,(Number(p.estoque)||0)+ +b.dataset.d);marcar();$("#lista").innerHTML=lista()},
+  async limpar(){
+    if(sujo){aviso("Publique as mudanças antes de limpar as fotos.","er");return}
+    try{
+      aviso("Procurando fotos não usadas…","in",0);
+      let arq=[];
+      try{arq=await gh("fotos")}catch(e){if(e.status===404){aviso("Ainda não há fotos enviadas.","ok");return}throw e}
+      const usadas=new Set(D.produtos.flatMap(fotosDe)),sobra=arq.filter(f=>f.type==="file"&&!usadas.has(f.path));
+      if(!sobra.length){aviso("Não há fotos sobrando. Tudo certo!","ok");return}
+      if(!confirm("Apagar "+sobra.length+" foto(s) que não estão em nenhum produto? Isso não pode ser desfeito.")){aviso("Nada foi apagado.","in");return}
+      for(const f of sobra)await gh(f.path,{method:"DELETE",body:JSON.stringify({message:"Limpeza de fotos não usadas",sha:f.sha})});
+      aviso(sobra.length+" foto(s) apagada(s).","ok");
+    }catch(e){aviso(erroTxt(e),"er",9000)}
+  },
   addlocal(){D.frete.push({local:"Novo local",valor:0});marcar();tela()},
   dellocal(b){D.frete.splice(+b.dataset.i,1);marcar();tela()},
   async publicar(){
+    const prob=validar();
+    if(prob.length){aviso("Corrija antes de publicar: "+prob.slice(0,3).join(" • ")+(prob.length>3?" (+"+(prob.length-3)+")":""),"er",12000);return}
     const bt=$("#barra .b");bt.disabled=true;aviso("Publicando… não feche esta página.","in",0);
     try{
       const atual=await gh("dados.json");
       if(atual.sha!==sha&&!confirm("O site foi alterado em outro lugar desde que você abriu o painel. Publicar agora vai substituir essas mudanças. Continuar?")){bt.disabled=false;aviso("Publicação cancelada.","in");return}
       for(const [path,url] of Object.entries(fotos)){
-        if(!D.produtos.some(p=>p.foto===path))continue;
+        if(enviadas.has(path)||!D.produtos.some(p=>fotosDe(p).includes(path)))continue;
         await gh(path,{method:"PUT",body:JSON.stringify({message:"Nova foto de produto",content:url.split(",")[1]})});
+        enviadas.add(path);
       }
       const r=await gh("dados.json",{method:"PUT",body:JSON.stringify({message:"Atualização pelo painel",content:enc(JSON.stringify(D,null,1)),sha:atual.sha})});
-      sha=r.content.sha;sujo=false;
-      Object.keys(fotos).forEach(k=>{});barra();aviso("Publicado! O site atualiza em 1 a 2 minutos.","ok",8000);
+      sha=r.content.sha;sujo=false;limparRascunho();
+      barra();aviso("Publicado! O site atualiza em 1 a 2 minutos.","ok",8000);
     }catch(e){bt.disabled=false;aviso(erroTxt(e),"er",9000)}
   }
 };
@@ -254,6 +340,7 @@ document.addEventListener("input",e=>{
     const f=D.frete[+t.dataset.fi];
     if(t.dataset.k==="local")f.local=limpa(t.value);
     else if(t.dataset.k==="valor"){const v=num(t.value);f.valor=isNaN(v)?0:v}
+    else if(t.dataset.k==="ret"){f.retirada=t.checked;marcar();return}
     else{f.valor=t.checked?null:0;marcar();tela();return}
     marcar();
   }
@@ -268,11 +355,20 @@ document.addEventListener("change",e=>{
   }
 });
 document.addEventListener("change",async e=>{
-  if(e.target.id!=="arq"||!e.target.files[0])return;
-  try{
-    const url=await reduz(e.target.files[0]),nome=$("#f-nome").value||"produto",path=`fotos/${slug(nome)}-${Date.now().toString(36)}.jpg`;
-    fotos[path]=url;const p=lerForm();edFoto=path;p.foto=path;ed.p=p;tela();
-  }catch(err){aviso("Não consegui abrir essa foto. Tente outra imagem.","er")}
+  if(e.target.id!=="arq"||!e.target.files.length)return;
+  const arqs=[...e.target.files],vagas=MAXF-edFotos.length;
+  if(arqs.length>vagas)aviso(`Cabem no máximo ${MAXF} fotos por produto. Vou adicionar só ${vagas}.`,"in");
+  else aviso("Preparando fotos…","in",0);
+  const base=slug($("#f-nome").value||"produto"),ok=[];let falhou=0;
+  for(const [k,arq] of arqs.slice(0,Math.max(vagas,0)).entries()){
+    try{
+      const url=await reduz(arq),path=`fotos/${base}-${Date.now().toString(36)}${k}.jpg`;
+      fotos[path]=url;ok.push(path);
+    }catch(err){falhou++}
+  }
+  if(ok.length){ed.p=lerForm();edFotos.push(...ok);ed.p=lerForm();tela();}
+  if(falhou)aviso(falhou+(falhou>1?" fotos não puderam":" foto não pôde")+" ser aberta"+(falhou>1?"s":"")+". Tente outra imagem.","er");
+  else if(ok.length)aviso(ok.length+(ok.length>1?" fotos adicionadas.":" foto adicionada.")+" Salve o produto e toque em Publicar.","ok");
 });
 addEventListener("beforeunload",e=>{if(sujo){e.preventDefault();e.returnValue=""}});
 
