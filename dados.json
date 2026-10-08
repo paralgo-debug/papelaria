@@ -36,10 +36,16 @@
  "produtos": [
   {
    "nome": "Giz de Rosto Toy Fashion 4 Cores Tris",
-   "categoria": "Papelaria Fofa",
    "preco": 21.5,
+   "precoDe": null,
+   "promoFim": null,
    "estoque": null,
-   "foto": "",
+   "categoria": "Papelaria Fofa",
+   "foto": "fotos/giz-de-rosto-toy-fashion-4-cor-muzrfyfu1.jpg",
+   "fotos": [
+    "fotos/giz-de-rosto-toy-fashion-4-cor-muzrfyfu1.jpg",
+    "fotos/giz-de-rosto-toy-fashion-4-cor-muzrfye10.jpg"
+   ],
    "emoji": "🎨",
    "descricao": "Giz de rosto em 4 cores da marca Tris.",
    "detalhes": "A linha Tris Toy cria memórias especiais através de brincadeiras que exploram incríveis descobertas. Um mundo repleto de alegria, diversão e imaginação.\nO Giz de Rosto, com seu corpo plástico e retrátil que não suja as mãos, formato ergonômico, é ideal para as mãozinhas dos pequenos praticarem sua criatividade de forma segura e divertida!\nCom 4 cores vibrantes, atóxicas e fashion, o giz facial é super macio para pintar e criar diferentes formas e desenhos na pele.",
@@ -49,10 +55,15 @@
   },
   {
    "nome": "Bloco de Anotações Capivara com Patinete Dessin",
-   "categoria": "Papelaria Fofa",
    "preco": 9.9,
+   "precoDe": null,
+   "promoFim": null,
    "estoque": null,
-   "foto": "",
+   "categoria": "Papelaria Fofa",
+   "foto": "fotos/bloco-de-anotacoes-capivara-co-muzrhojw0.jpg",
+   "fotos": [
+    "fotos/bloco-de-anotacoes-capivara-co-muzrhojw0.jpg"
+   ],
    "emoji": "📝",
    "descricao": "Bloco de anotações Dessin com estampa fofa.",
    "detalhes": "Bloco de anotações da Dessin com estampa de capivara andando de patinete. Bom para recados, listas e lembretes do dia a dia.",
@@ -62,10 +73,17 @@
   },
   {
    "nome": "Marca Texto Lumini Ex Slim Cis Avulsa",
-   "categoria": "Escrita",
    "preco": 5.9,
+   "precoDe": null,
+   "promoFim": null,
    "estoque": null,
-   "foto": "",
+   "categoria": "Escrita",
+   "foto": "fotos/marca-texto-lumini-ex-slim-cis-muzrj2ve0.jpg",
+   "fotos": [
+    "fotos/marca-texto-lumini-ex-slim-cis-muzrj2ve0.jpg",
+    "fotos/marca-texto-lumini-ex-slim-cis-muzrjssh0.jpg",
+    "fotos/marca-texto-lumini-ex-slim-cis-muzrjsvi1.jpg"
+   ],
    "emoji": "🖍️",
    "descricao": "Marca-texto slim da Cis, vendido avulso.",
    "detalhes": "Marca-texto Lumini Ex Slim, da Cis, vendido por unidade. Formato slim, bom para destacar textos em livros, apostilas e cadernos.",
@@ -75,10 +93,15 @@
   },
   {
    "nome": "Marca Texto Fluo Brw Avulsa",
-   "categoria": "Escrita",
    "preco": 3.5,
+   "precoDe": null,
+   "promoFim": null,
    "estoque": null,
-   "foto": "",
+   "categoria": "Escrita",
+   "foto": "fotos/marca-texto-fluo-brw-avulsa-muzrm4l50.jpg",
+   "fotos": [
+    "fotos/marca-texto-fluo-brw-avulsa-muzrm4l50.jpg"
+   ],
    "emoji": "🖍️",
    "descricao": "Marca-texto Fluo da Brw, vendido avulso.",
    "detalhes": "Marca-texto Fluo, da Brw, vendido por unidade. Para destacar os pontos importantes dos estudos e do trabalho.",
