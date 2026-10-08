@@ -111,10 +111,18 @@
   },
   {
    "nome": "Marca Texto Fluo Amarelo cx 12 Brw",
-   "categoria": "Escrita",
    "preco": 29,
+   "precoDe": null,
+   "promoFim": null,
    "estoque": null,
-   "foto": "",
+   "categoria": "Escrita",
+   "foto": "fotos/marca-texto-fluo-amarelo-cx-12-muzrojf30.jpg",
+   "fotos": [
+    "fotos/marca-texto-fluo-amarelo-cx-12-muzrojf30.jpg",
+    "fotos/marca-texto-fluo-amarelo-cx-12-muzrojhi1.jpg",
+    "fotos/marca-texto-fluo-amarelo-cx-12-muzrojix2.jpg",
+    "fotos/marca-texto-fluo-amarelo-cx-12-muzrojk93.jpg"
+   ],
    "emoji": "🖍️",
    "descricao": "Caixa com 12 marca-textos Fluo amarelos.",
    "detalhes": "Caixa com 12 marca-textos Fluo amarelos da Brw. Boa pedida para estudantes, escritórios e quem destaca muito.",
@@ -124,10 +132,15 @@
   },
   {
    "nome": "Marca Texto Gel Compactor Avulso",
-   "categoria": "Escrita",
    "preco": 10.95,
+   "precoDe": null,
+   "promoFim": null,
    "estoque": null,
-   "foto": "",
+   "categoria": "Escrita",
+   "foto": "fotos/marca-texto-gel-compactor-avul-muzrq58l0.jpg",
+   "fotos": [
+    "fotos/marca-texto-gel-compactor-avul-muzrq58l0.jpg"
+   ],
    "emoji": "🖍️",
    "descricao": "Marca-texto em gel da Compactor.",
    "detalhes": "Marca-texto em gel da Compactor, vendido por unidade. Uma forma diferente de destacar textos e deixar as anotações coloridas.",
