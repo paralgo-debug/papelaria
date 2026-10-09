@@ -89,7 +89,7 @@ async function gh(path,opt={}){
   if(!r.ok){const e=new Error("http");e.status=r.status;throw e}
   return r.json();
 }
-const erroTxt=e=>e.status===401?"A chave não é válida ou já venceu. Crie uma nova (veja a aba Ajuda)."
+const erroTxt=e=>e.status===401?"A chave não é válida ou já venceu. Será necessário gerar uma nova."
   :e.status===403?"A chave não tem permissão. Ela precisa de \"Contents: Read and write\" neste repositório."
   :e.status===404?"Não encontrei o repositório ou o arquivo dados.json. Confira o nome do repositório e se o arquivo foi enviado."
   :e.status===409||e.status===422?"O site mudou enquanto você editava. Toque em Sair, entre de novo e refaça a alteração."
@@ -152,11 +152,10 @@ function tela(){
     <div class="card">
       <label>Repositório do site<small>Exemplo: seu-usuario/papelaria</small></label>
       <input id="repo" value="${h(cfg.repo||auto())}" autocapitalize="off" autocorrect="off">
-      <label>Chave de acesso<small>É a senha especial criada no GitHub (veja o passo a passo abaixo)</small></label>
+      <label>Chave de acesso<small>É a senha especial criada no GitHub</small></label>
       <input id="tok" type="password" value="${h(cfg.token||"")}" autocomplete="off">
       <div class="linha"><button class="b p" data-a="conectar">Conectar</button></div>
-    </div>
-    <details><summary>Como criar a chave de acesso</summary><ol class="passos">${ajudaChave()}</ol></details></div>`;
+    </div></div>`;
     return;
   }
   const abas=[["prod","📦 Produtos"],["ent","🚚 Entrega"],["loja","🏪 Loja"],["aj","❓ Ajuda"]];
@@ -196,16 +195,8 @@ function corpo(){
     <li>O estoque <b>não diminui sozinho</b> quando alguém faz um pedido. Na lista de produtos use os botões <b>−1</b> e <b>+1</b> depois de cada venda.</li>
     <li>Se a página fechar antes de publicar, o painel guarda um <b>rascunho</b> neste aparelho e oferece continuar na próxima vez.</li>
     <li>Antes de publicar, o painel confere se está tudo certo (nome, preço, categoria, WhatsApp) e avisa o que corrigir.</li></ol></div>
-    <div class="card"><b>Manutenção</b><p>Apaga do repositório as fotos que não estão mais em nenhum produto (de produtos excluídos ou fotos trocadas).</p><button class="b" data-a="limpar">🧹 Limpar fotos não usadas</button></div>
-    <div class="card"><b>Criar uma nova chave de acesso</b><ol class="passos">${ajudaChave()}</ol></div>`;
+    <div class="card"><b>Manutenção</b><p>Apaga do repositório as fotos que não estão mais em nenhum produto (de produtos excluídos ou fotos trocadas).</p><button class="b" data-a="limpar">🧹 Limpar fotos não usadas</button></div>`;
 }
-const ajudaChave=()=>`<li>Entre em <b>github.com</b> com a conta dona do site.</li>
-<li>Toque na sua foto → <b>Settings</b> → role até o fim → <b>Developer settings</b>.</li>
-<li>Abra <b>Personal access tokens → Fine-grained tokens → Generate new token</b>.</li>
-<li>Dê um nome (ex.: Painel da loja) e escolha um prazo de validade.</li>
-<li>Em <b>Repository access</b>, marque <b>Only select repositories</b> e escolha o repositório do site.</li>
-<li>Em <b>Permissions → Repository permissions</b>, ache <b>Contents</b> e escolha <b>Read and write</b>.</li>
-<li>Toque em <b>Generate token</b>, copie o código e cole aqui. Ele só aparece uma vez.</li>`;
 const lista=()=>{
   const q=busca.toLowerCase();
   const it=D.produtos.map((p,i)=>[p,i]).filter(x=>x[0].nome.toLowerCase().includes(q)).map(([p,i])=>
