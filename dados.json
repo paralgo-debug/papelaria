@@ -503,10 +503,17 @@
   },
   {
    "nome": "Caderno Colegial 1 Matéria 80 fls Melissa Max Bloomy Cicero",
-   "categoria": "Caderno e Fichário",
    "preco": 72.4,
+   "precoDe": null,
+   "promoFim": null,
    "estoque": null,
-   "foto": "",
+   "categoria": "Caderno e Fichário",
+   "foto": "fotos/caderno-colegial-1-materia-80--mv2o4gx50.jpg",
+   "fotos": [
+    "fotos/caderno-colegial-1-materia-80--mv2o4gx50.jpg",
+    "fotos/caderno-colegial-1-materia-80--mv2o4h0j1.jpg",
+    "fotos/caderno-colegial-1-materia-80--mv2o4h4k2.jpg"
+   ],
    "emoji": "📓",
    "descricao": "Caderno Cicero com 80 folhas.",
    "detalhes": "Caderno colegial de 1 matéria, 80 folhas, modelo Melissa Max Bloomy, da Cicero. Uma opção bonita para as aulas e anotações.",
