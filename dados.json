@@ -354,10 +354,15 @@
   },
   {
    "nome": "Canetinha Hidrográfica Jumbo 12 Cores Compactor",
-   "categoria": "Escrita",
    "preco": 29.95,
+   "precoDe": null,
+   "promoFim": null,
    "estoque": null,
-   "foto": "",
+   "categoria": "Escrita",
+   "foto": "fotos/canetinha-hidrografica-jumbo-1-mv2et6et0.jpg",
+   "fotos": [
+    "fotos/canetinha-hidrografica-jumbo-1-mv2et6et0.jpg"
+   ],
    "emoji": "🖍️",
    "descricao": "Estojo com 12 canetinhas jumbo.",
    "detalhes": "Estojo com 12 canetinhas hidrográficas Jumbo, da Compactor. Linha Jumbo, para colorir áreas maiores com facilidade.",
@@ -367,10 +372,15 @@
   },
   {
    "nome": "Lápis de Cor Super Ponta 4,0 mm 12 Cores Tris",
-   "categoria": "Escrita",
    "preco": 26.9,
+   "precoDe": null,
+   "promoFim": null,
    "estoque": null,
-   "foto": "",
+   "categoria": "Escrita",
+   "foto": "fotos/lapis-de-cor-super-ponta-4-0-m-mv2euj800.jpg",
+   "fotos": [
+    "fotos/lapis-de-cor-super-ponta-4-0-m-mv2euj800.jpg"
+   ],
    "emoji": "✏️",
    "descricao": "Caixa com 12 lápis de cor de ponta grossa.",
    "detalhes": "Caixa com 12 lápis de cor Super Ponta, da Tris, com mina de 4,0 mm. Para colorir desenhos, mapas e trabalhos escolares.",
