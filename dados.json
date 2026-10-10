@@ -150,10 +150,15 @@
   },
   {
    "nome": "Marcador Artístico Giz Líquido 6mm Evoke Brw",
-   "categoria": "Escrita",
    "preco": 14.9,
+   "precoDe": null,
+   "promoFim": null,
    "estoque": null,
-   "foto": "",
+   "categoria": "Escrita",
+   "foto": "fotos/marcador-artistico-giz-liquido-mv2cbom60.jpg",
+   "fotos": [
+    "fotos/marcador-artistico-giz-liquido-mv2cbom60.jpg"
+   ],
    "emoji": "🖌️",
    "descricao": "Marcador de giz líquido com ponta de 6 mm.",
    "detalhes": "Marcador artístico de giz líquido da Evoke (Brw), com ponta de 6 mm. Indicado para letreiros, quadros e trabalhos criativos.",
@@ -163,10 +168,16 @@
   },
   {
    "nome": "Marcador Criativo Flow 2 Pontas Cis Avulso",
-   "categoria": "Escrita",
    "preco": 10.9,
+   "precoDe": null,
+   "promoFim": null,
    "estoque": null,
-   "foto": "",
+   "categoria": "Escrita",
+   "foto": "fotos/marcador-criativo-flow-2-ponta-mv2cd8h50.jpg",
+   "fotos": [
+    "fotos/marcador-criativo-flow-2-ponta-mv2cd8h50.jpg",
+    "fotos/marcador-criativo-flow-2-ponta-mv2cd8ja1.jpg"
+   ],
    "emoji": "🖌️",
    "descricao": "Marcador de duas pontas da Cis. Preço a partir de.",
    "detalhes": "Marcador criativo Flow de duas pontas, da Cis, vendido por unidade. Duas espessuras em uma só caneta, para escrever e colorir.",
@@ -176,10 +187,16 @@
   },
   {
    "nome": "Kit Marcador Criativo Flow Estojo 24 Cores Cis",
-   "categoria": "Escrita",
    "preco": 269,
+   "precoDe": null,
+   "promoFim": null,
    "estoque": null,
-   "foto": "",
+   "categoria": "Escrita",
+   "foto": "fotos/kit-marcador-criativo-flow-est-mv2cehjl0.jpg",
+   "fotos": [
+    "fotos/kit-marcador-criativo-flow-est-mv2cehjl0.jpg",
+    "fotos/kit-marcador-criativo-flow-est-mv2cehlx1.jpg"
+   ],
    "emoji": "🎨",
    "descricao": "Estojo com 24 cores de marcador criativo.",
    "detalhes": "Estojo com 24 cores de marcadores criativos Flow, da Cis. Um kit completo para lettering, desenhos e agendas coloridas.",
