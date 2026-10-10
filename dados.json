@@ -335,10 +335,16 @@
   },
   {
    "nome": "Canetinha Hidrográfica Jumbo 6 Cores Compactor",
-   "categoria": "Escrita",
    "preco": 17.5,
+   "precoDe": null,
+   "promoFim": null,
    "estoque": null,
-   "foto": "",
+   "categoria": "Escrita",
+   "foto": "fotos/canetinha-hidrografica-jumbo-6-mv2d9ul90.jpg",
+   "fotos": [
+    "fotos/canetinha-hidrografica-jumbo-6-mv2d9ul90.jpg",
+    "fotos/canetinha-hidrografica-jumbo-6-mv2d9uo81.jpg"
+   ],
    "emoji": "🖍️",
    "descricao": "Estojo com 6 canetinhas jumbo.",
    "detalhes": "Estojo com 6 canetinhas hidrográficas Jumbo, da Compactor. Linha Jumbo, para colorir áreas maiores com facilidade.",
