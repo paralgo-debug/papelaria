@@ -263,10 +263,17 @@
   },
   {
    "nome": "Caneta Hi Tecpoint V5 0,5 mm Pilot Avulsa",
-   "categoria": "Escrita",
    "preco": 31.6,
+   "precoDe": null,
+   "promoFim": null,
    "estoque": null,
-   "foto": "",
+   "categoria": "Escrita",
+   "foto": "fotos/caneta-hi-tecpoint-v5-0-5-mm-p-mv2d1c6d0.jpg",
+   "fotos": [
+    "fotos/caneta-hi-tecpoint-v5-0-5-mm-p-mv2d1c6d0.jpg",
+    "fotos/caneta-hi-tecpoint-v5-0-5-mm-p-mv2d1c8h1.jpg",
+    "fotos/caneta-hi-tecpoint-v5-0-5-mm-p-mv2d1car2.jpg"
+   ],
    "emoji": "🖊️",
    "descricao": "Caneta Pilot de ponta fina, vendida avulsa.",
    "detalhes": "Caneta Hi-Tecpoint V5, da Pilot, ponta 0,5 mm, vendida por unidade. Traço fino e preciso para escrever e desenhar.",
@@ -276,55 +283,21 @@
   },
   {
    "nome": "Caneta Gel 0,5 mm Abacatinho Tilibra",
-   "categoria": "Escrita",
    "preco": 16.95,
+   "precoDe": null,
+   "promoFim": null,
    "estoque": null,
-   "foto": "",
+   "categoria": "Escrita",
+   "foto": "fotos/caneta-gel-0-5-mm-abacatinho-t-mv2d2gip0.jpg",
+   "fotos": [
+    "fotos/caneta-gel-0-5-mm-abacatinho-t-mv2d2gip0.jpg"
+   ],
    "emoji": "🖊️",
    "descricao": "Caneta gel Tilibra com tema abacatinho.",
    "detalhes": "Caneta gel de 0,5 mm da Tilibra com tema de abacatinho. Para quem gosta de material de escritório fofo.",
    "ativo": true,
    "destaque": false,
    "codigo": "caneta-gel-0-5-mm-abacatinho-tilibra"
-  },
-  {
-   "nome": "Caneta Esferográfica Gel Spiro 0,7 Cis Avulsa",
-   "categoria": "Escrita",
-   "preco": 4.5,
-   "estoque": null,
-   "foto": "",
-   "emoji": "🖊️",
-   "descricao": "Caneta gel Spiro da Cis, vendida avulsa.",
-   "detalhes": "Caneta esferográfica gel Spiro, da Cis, ponta 0,7 mm, vendida por unidade. Para o uso diário no estudo e no trabalho.",
-   "ativo": true,
-   "destaque": false,
-   "codigo": "caneta-esferografica-gel-spiro-0-7-cis-a"
-  },
-  {
-   "nome": "Caneta Esferográfica 10 Cores Astro Tris",
-   "categoria": "Escrita",
-   "preco": 29.9,
-   "estoque": null,
-   "foto": "",
-   "emoji": "🖊️",
-   "descricao": "Caneta esferográfica com 10 cores da Tris.",
-   "detalhes": "Caneta esferográfica da Tris com 10 cores em uma só. Ajuda a organizar anotações e estudos com mais cor.",
-   "ativo": true,
-   "destaque": false,
-   "codigo": "caneta-esferografica-10-cores-astro-tris"
-  },
-  {
-   "nome": "Refil Caneta Energel 0,7 mm Pentel c/3",
-   "categoria": "Escrita",
-   "preco": 26.5,
-   "estoque": null,
-   "foto": "",
-   "emoji": "🖊️",
-   "descricao": "Pacote com 3 refis para caneta Energel.",
-   "detalhes": "Pacote com 3 refis de 0,7 mm para canetas Energel, da Pentel. Reponha a carga e continue usando a sua caneta favorita.",
-   "ativo": true,
-   "destaque": false,
-   "codigo": "refil-caneta-energel-0-7-mm-pentel-c-3"
   },
   {
    "nome": "Canetinha Hidrográfica Neo Pen Mini 6 Cores Compactor",
