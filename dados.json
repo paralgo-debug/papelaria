@@ -632,10 +632,15 @@
   },
   {
    "nome": "Refil Caderno Organizador A5 Offset Pontilhado Cicero",
-   "categoria": "Caderno e Fichário",
    "preco": 32.15,
+   "precoDe": null,
+   "promoFim": null,
    "estoque": null,
-   "foto": "",
+   "categoria": "Caderno e Fichário",
+   "foto": "fotos/refil-caderno-organizador-a5-o-mv2ohfdk0.jpg",
+   "fotos": [
+    "fotos/refil-caderno-organizador-a5-o-mv2ohfdk0.jpg"
+   ],
    "emoji": "📄",
    "descricao": "Refil pontilhado em tamanho A5.",
    "detalhes": "Refil para caderno organizador A5, folha pontilhada offset, da Cicero. Para planejar, fazer listas e desenhar com guias de pontos.",
