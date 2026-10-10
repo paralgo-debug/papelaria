@@ -668,10 +668,15 @@
   },
   {
    "nome": "Apontador com Depósito Abóbora Boo Tris Avulso",
-   "categoria": "Papelaria",
    "preco": 7.95,
+   "precoDe": null,
+   "promoFim": null,
    "estoque": null,
-   "foto": "",
+   "categoria": "Papelaria",
+   "foto": "fotos/apontador-com-deposito-abobora-mv2on2q10.jpg",
+   "fotos": [
+    "fotos/apontador-com-deposito-abobora-mv2on2q10.jpg"
+   ],
    "emoji": "✏️",
    "descricao": "Apontador com depósito, tema abóbora.",
    "detalhes": "Apontador com depósito Boo!, em formato de abóbora, perfeito os apaixonados por Halloween.\nPossui lâmina antiferrugem para maior durabilidade e compartimento que armazena os resíduos, mantendo seu espaço limpo e organizado.\nVenda Unitária",
@@ -681,10 +686,15 @@
   },
   {
    "nome": "Borracha Tutti Frutti Brw",
-   "categoria": "Papelaria",
    "preco": 19.9,
+   "precoDe": null,
+   "promoFim": null,
    "estoque": null,
-   "foto": "",
+   "categoria": "Papelaria",
+   "foto": "fotos/borracha-tutti-frutti-brw-mv2ooqiu0.jpg",
+   "fotos": [
+    "fotos/borracha-tutti-frutti-brw-mv2ooqiu0.jpg"
+   ],
    "emoji": "🧽",
    "descricao": "Borracha Brw da linha Tutti Frutti.",
    "detalhes": "Detalhes:\n4 mini borrachas, em embalagem de lancheira\nNão tóxico\nProduto Certificado INMETRO - Registro 003389/2018",
