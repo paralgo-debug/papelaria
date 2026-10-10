@@ -12,20 +12,21 @@
  },
  "frete": [
   {
-   "local": "Lugar X",
+   "local": "Bairro X",
    "valor": 5
   },
   {
-   "local": "Lugar Y",
+   "local": "Bairro Y",
    "valor": 10
   },
   {
-   "local": "Lugar Z",
+   "local": "Bairro Z",
    "valor": 15
   },
   {
-   "local": "Lugar J",
-   "valor": null
+   "local": "Bairro J",
+   "valor": null,
+   "retirada": true
   },
   {
    "local": "Retirar na loja",
