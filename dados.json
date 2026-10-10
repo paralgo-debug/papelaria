@@ -445,10 +445,16 @@
   },
   {
    "nome": "Caderno Colegial 1 Matéria Stitch Foroni",
-   "categoria": "Caderno e Fichário",
    "preco": 42.9,
+   "precoDe": null,
+   "promoFim": null,
    "estoque": null,
-   "foto": "",
+   "categoria": "Caderno e Fichário",
+   "foto": "fotos/caderno-colegial-1-materia-sti-mv2nhkkh0.jpg",
+   "fotos": [
+    "fotos/caderno-colegial-1-materia-sti-mv2nhkkh0.jpg",
+    "fotos/caderno-colegial-1-materia-sti-mv2nhkmu1.jpg"
+   ],
    "emoji": "📓",
    "descricao": "Caderno colegial de 1 matéria, tema Stitch.",
    "detalhes": "Caderno colegial de 1 matéria com tema Stitch, da Foroni. Para as aulas e os estudos de quem é fã do personagem.",
@@ -458,10 +464,17 @@
   },
   {
    "nome": "Caderno Universitário 10 Matérias Stitch Foroni",
-   "categoria": "Caderno e Fichário",
    "preco": 78.9,
+   "precoDe": null,
+   "promoFim": null,
    "estoque": null,
-   "foto": "",
+   "categoria": "Caderno e Fichário",
+   "foto": "fotos/caderno-universitario-10-mater-mv2nj9qo0.jpg",
+   "fotos": [
+    "fotos/caderno-universitario-10-mater-mv2nj9qo0.jpg",
+    "fotos/caderno-universitario-10-mater-mv2nj9ti1.jpg",
+    "fotos/caderno-universitario-10-mater-mv2nj9w92.jpg"
+   ],
    "emoji": "📓",
    "descricao": "Caderno universitário de 10 matérias.",
    "detalhes": "Caderno universitário de 10 matérias com tema Stitch, da Foroni. Espaço para organizar as disciplinas do semestre.",
@@ -471,10 +484,16 @@
   },
   {
    "nome": "Caderno Colegial 1 Matéria 80 fls Doce Florada Off White Cicero",
-   "categoria": "Caderno e Fichário",
    "preco": 66.5,
+   "precoDe": null,
+   "promoFim": null,
    "estoque": null,
-   "foto": "",
+   "categoria": "Caderno e Fichário",
+   "foto": "fotos/caderno-colegial-1-materia-80--mv2nkckm0.jpg",
+   "fotos": [
+    "fotos/caderno-colegial-1-materia-80--mv2nkckm0.jpg",
+    "fotos/caderno-colegial-1-materia-80--mv2nkcn71.jpg"
+   ],
    "emoji": "📓",
    "descricao": "Caderno Cicero com 80 folhas.",
    "detalhes": "Caderno colegial de 1 matéria, 80 folhas, modelo Doce Florada, na cor Off White, da Cicero. Para estudos e anotações com estilo.",
