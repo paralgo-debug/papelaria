@@ -425,24 +425,17 @@
    "codigo": "kit-escolar-ecolapis-de-cor-caras-e-core"
   },
   {
-   "nome": "Caderno Dessin Notes Pólen 9x13 cm",
-   "categoria": "Caderno e Fichário",
-   "preco": 5.95,
-   "estoque": null,
-   "foto": "",
-   "emoji": "📓",
-   "descricao": "Caderno de bolso da Dessin. Preço a partir de.",
-   "detalhes": "Dessin Notes, Ideal Para Rascunho, Desenho, Anotações E Muito Mais!\nCapa Flexível\nAcabamento Grampeado\nContém 30 Folhas\nMiolo Pólen 70g\nTamanho 9x13",
-   "ativo": true,
-   "destaque": false,
-   "codigo": "caderno-dessin-notes-polen-9x13-cm"
-  },
-  {
    "nome": "Caderneta 1/8 Stitch Foroni",
-   "categoria": "Caderno e Fichário",
    "preco": 24.9,
+   "precoDe": null,
+   "promoFim": null,
    "estoque": null,
-   "foto": "",
+   "categoria": "Caderno e Fichário",
+   "foto": "fotos/caderneta-1-8-stitch-foroni-mv2negvv0.jpg",
+   "fotos": [
+    "fotos/caderneta-1-8-stitch-foroni-mv2negvv0.jpg",
+    "fotos/caderneta-1-8-stitch-foroni-mv2negyl1.jpg"
+   ],
    "emoji": "📓",
    "descricao": "Caderneta Foroni com tema Stitch.",
    "detalhes": "Caderneta 1/8 com tema Stitch, da Foroni. Tamanho pequeno para anotações rápidas, listas e recados.",
@@ -462,19 +455,6 @@
    "ativo": true,
    "destaque": false,
    "codigo": "caderno-colegial-1-materia-stitch-foroni"
-  },
-  {
-   "nome": "Caderno Colegial 10 Matérias Stitch Foroni",
-   "categoria": "Caderno e Fichário",
-   "preco": 72.9,
-   "estoque": null,
-   "foto": "",
-   "emoji": "📓",
-   "descricao": "Caderno colegial de 10 matérias, tema Stitch.",
-   "detalhes": "Caderno colegial de 10 matérias com tema Stitch, da Foroni. Para organizar várias disciplinas em um só caderno.",
-   "ativo": true,
-   "destaque": false,
-   "codigo": "caderno-colegial-10-materias-stitch-foro"
   },
   {
    "nome": "Caderno Universitário 10 Matérias Stitch Foroni",
