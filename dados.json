@@ -390,23 +390,33 @@
   },
   {
    "nome": "Lápis de Cor Mega Soft Color 36 Cores Tris",
-   "categoria": "Escrita",
    "preco": 69.9,
+   "precoDe": null,
+   "promoFim": null,
    "estoque": null,
-   "foto": "",
+   "categoria": "Escrita",
+   "foto": "fotos/lapis-de-cor-mega-soft-color-3-mv2n2n580.jpg",
+   "fotos": [
+    "fotos/lapis-de-cor-mega-soft-color-3-mv2n2n580.jpg"
+   ],
    "emoji": "✏️",
    "descricao": "Caixa com 36 lápis de cor da Tris.",
    "detalhes": "Caixa com 36 lápis de cor Mega Soft Color, da Tris. Grande variedade de tons para ilustrações e para colorir com mais detalhes.",
    "ativo": true,
-   "destaque": false,
+   "destaque": true,
    "codigo": "lapis-de-cor-mega-soft-color-36-cores-tr"
   },
   {
    "nome": "Kit Escolar Ecolápis de Cor Caras e Cores 12 Cores + 6 Tons de Pele Faber-Castell",
-   "categoria": "Escrita",
    "preco": 33.2,
+   "precoDe": null,
+   "promoFim": null,
    "estoque": null,
-   "foto": "",
+   "categoria": "Escrita",
+   "foto": "fotos/kit-escolar-ecolapis-de-cor-ca-mv2n6zs40.jpg",
+   "fotos": [
+    "fotos/kit-escolar-ecolapis-de-cor-ca-mv2n6zs40.jpg"
+   ],
    "emoji": "✏️",
    "descricao": "Kit com 12 cores e 6 tons de pele.",
    "detalhes": "Kit escolar Ecolápis de cor Caras & Cores, da Faber-Castell, com 12 cores e 6 tons de pele. Ótimo para desenhar pessoas com mais variedade de tons.",
