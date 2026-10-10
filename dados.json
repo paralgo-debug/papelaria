@@ -613,10 +613,16 @@
   },
   {
    "nome": "Caderneta Pautada Verde Clássica 14x21 Cicero",
-   "categoria": "Caderno e Fichário",
    "preco": 35.9,
+   "precoDe": null,
+   "promoFim": null,
    "estoque": null,
-   "foto": "",
+   "categoria": "Caderno e Fichário",
+   "foto": "fotos/caderneta-pautada-verde-classi-mv2ofs6f0.jpg",
+   "fotos": [
+    "fotos/caderneta-pautada-verde-classi-mv2ofs6f0.jpg",
+    "fotos/caderneta-pautada-verde-classi-mv2ofsaa1.jpg"
+   ],
    "emoji": "📒",
    "descricao": "Caderneta pautada da Cicero.",
    "detalhes": "Caderneta pautada verde clássica, formato 14x21 cm, da Cicero. Boa para anotações, rascunhos e registros do dia a dia.",
