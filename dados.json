@@ -523,10 +523,18 @@
   },
   {
    "nome": "Caderno Universitário 10 Matérias 160 fls Bossa Nova Boemia Cicero",
-   "categoria": "Caderno e Fichário",
    "preco": 99.9,
+   "precoDe": null,
+   "promoFim": null,
    "estoque": null,
-   "foto": "",
+   "categoria": "Caderno e Fichário",
+   "foto": "fotos/caderno-universitario-10-mater-mv2o7lxt3.jpg",
+   "fotos": [
+    "fotos/caderno-universitario-10-mater-mv2o7lxt3.jpg",
+    "fotos/caderno-universitario-10-mater-mv2o7lrk1.jpg",
+    "fotos/caderno-universitario-10-mater-mv2o7lur2.jpg",
+    "fotos/caderno-universitario-10-mater-mv2o7lne0.jpg"
+   ],
    "emoji": "📔",
    "descricao": "Caderno Cicero com 160 folhas.",
    "detalhes": "Caderno universitário de 10 matérias, 160 folhas, modelo Bossa Nova Boêmia, da Cicero. Espaço de sobra para várias disciplinas.",
