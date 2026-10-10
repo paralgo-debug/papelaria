@@ -301,10 +301,15 @@
   },
   {
    "nome": "Canetinha Hidrográfica Neo Pen Mini 6 Cores Compactor",
-   "categoria": "Escrita",
    "preco": 7.5,
+   "precoDe": null,
+   "promoFim": null,
    "estoque": null,
-   "foto": "",
+   "categoria": "Escrita",
+   "foto": "fotos/canetinha-hidrografica-neo-pen-mv2d7zmj0.jpg",
+   "fotos": [
+    "fotos/canetinha-hidrografica-neo-pen-mv2d7zmj0.jpg"
+   ],
    "emoji": "🖍️",
    "descricao": "Estojo com 6 canetinhas mini.",
    "detalhes": "Estojo com 6 canetinhas hidrográficas Neo Pen Mini, da Compactor. Tamanho compacto para levar na mochila e colorir em qualquer lugar.",
@@ -313,28 +318,18 @@
    "codigo": "canetinha-hidrografica-neo-pen-mini-6-co"
   },
   {
-   "nome": "Canetinha Hidrográfica Neo Pen 12 Cores Compactor",
-   "categoria": "Escrita",
-   "preco": 13.95,
-   "estoque": null,
-   "foto": "",
-   "emoji": "🖍️",
-   "descricao": "Estojo com 12 canetinhas hidrográficas.",
-   "detalhes": "Estojo com 12 canetinhas hidrográficas Neo Pen, da Compactor. Cores variadas para desenhos, trabalhos escolares e lazer.",
-   "ativo": true,
-   "destaque": true,
-   "codigo": "canetinha-hidrografica-neo-pen-12-cores-"
-  },
-  {
    "nome": "Canetinha Hidrográfica Neo Pen 48 Cores Compactor",
-   "categoria": "Escrita",
    "preco": 69.9,
+   "precoDe": null,
+   "promoFim": null,
    "estoque": null,
+   "categoria": "Escrita",
    "foto": "",
+   "fotos": [],
    "emoji": "🖍️",
    "descricao": "Estojo com 48 cores de canetinhas.",
    "detalhes": "Estojo com 48 cores de canetinhas hidrográficas Neo Pen, da Compactor. Muita variedade de tons para quem gosta de colorir com detalhes.",
-   "ativo": true,
+   "ativo": false,
    "destaque": false,
    "codigo": "canetinha-hidrografica-neo-pen-48-cores-"
   },
