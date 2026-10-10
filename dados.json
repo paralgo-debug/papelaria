@@ -243,10 +243,17 @@
   },
   {
    "nome": "Caneta Energel Retrátil 1,0 Pentel Avulsa",
-   "categoria": "Escrita",
    "preco": 10.9,
+   "precoDe": null,
+   "promoFim": null,
    "estoque": null,
-   "foto": "",
+   "categoria": "Escrita",
+   "foto": "fotos/caneta-energel-retratil-1-0-pe-mv2cku8n0.jpg",
+   "fotos": [
+    "fotos/caneta-energel-retratil-1-0-pe-mv2cku8n0.jpg",
+    "fotos/caneta-energel-retratil-1-0-pe-mv2ckubv1.jpg",
+    "fotos/caneta-energel-retratil-1-0-pe-mv2ckuef2.jpg"
+   ],
    "emoji": "🖊️",
    "descricao": "Caneta gel retrátil Pentel de ponta 1,0.",
    "detalhes": "Caneta gel retrátil Energel, da Pentel, ponta 1,0 mm, vendida por unidade. Traço mais grosso para quem gosta de escrita marcada.",
