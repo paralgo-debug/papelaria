@@ -650,10 +650,15 @@
   },
   {
    "nome": "Refil Bloco de Fichário Colegial/B5 Pautado Folha Preta 80 g Nali",
-   "categoria": "Caderno e Fichário",
    "preco": 29.9,
+   "precoDe": null,
+   "promoFim": null,
    "estoque": null,
-   "foto": "",
+   "categoria": "Caderno e Fichário",
+   "foto": "fotos/refil-bloco-de-fichario-colegi-mv2ojm2g0.jpg",
+   "fotos": [
+    "fotos/refil-bloco-de-fichario-colegi-mv2ojm2g0.jpg"
+   ],
    "emoji": "📄",
    "descricao": "Refil pautado de folha preta.",
    "detalhes": "Refil de bloco para fichário colegial/B5, pautado, com folha preta de 80 g, da Nali. Para repor folhas e dar um visual diferente aos seus cadernos.",
