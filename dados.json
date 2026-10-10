@@ -206,10 +206,15 @@
   },
   {
    "nome": "Kit Caneta Esferográfica Retrátil Haribo Compactor",
-   "categoria": "Escrita",
    "preco": 10.3,
+   "precoDe": null,
+   "promoFim": null,
    "estoque": null,
-   "foto": "",
+   "categoria": "Escrita",
+   "foto": "fotos/kit-caneta-esferografica-retra-mv2cg7mc0.jpg",
+   "fotos": [
+    "fotos/kit-caneta-esferografica-retra-mv2cg7mc0.jpg"
+   ],
    "emoji": "🖊️",
    "descricao": "Kit de canetas retráteis da linha Haribo.",
    "detalhes": "Kit de canetas esferográficas retráteis da linha Haribo, da Compactor. Práticas para o dia a dia, sem tampa para perder.",
@@ -218,24 +223,17 @@
    "codigo": "kit-caneta-esferografica-retratil-haribo"
   },
   {
-   "nome": "Kit Marca Texto + Caneta Haribo Compactor",
-   "categoria": "Escrita",
-   "preco": 15.9,
-   "estoque": null,
-   "foto": "",
-   "emoji": "🖊️",
-   "descricao": "Kit com marca-texto e caneta da linha Haribo.",
-   "detalhes": "Kit com marca-texto e caneta da linha Haribo, da Compactor. Duas peças para estudar, anotar e destacar.",
-   "ativo": true,
-   "destaque": true,
-   "codigo": "kit-marca-texto-caneta-haribo-compactor"
-  },
-  {
    "nome": "Caneta Energel Retrátil Black Colors 0,5 Pentel",
-   "categoria": "Escrita",
    "preco": 14.5,
+   "precoDe": null,
+   "promoFim": null,
    "estoque": null,
-   "foto": "",
+   "categoria": "Escrita",
+   "foto": "fotos/caneta-energel-retratil-black--mv2cjbso0.jpg",
+   "fotos": [
+    "fotos/caneta-energel-retratil-black--mv2cjbso0.jpg",
+    "fotos/caneta-energel-retratil-black--mv2cjbv01.jpg"
+   ],
    "emoji": "🖊️",
    "descricao": "Caneta gel retrátil Pentel, vendida avulsa.",
    "detalhes": "Caneta gel retrátil Energel Black Colors, da Pentel, ponta 0,5 mm, vendida por unidade. Escrita fina para anotações e agendas.",
